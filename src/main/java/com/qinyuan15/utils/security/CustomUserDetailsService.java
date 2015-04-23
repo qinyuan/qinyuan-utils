@@ -23,7 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        IUser user = userDao.getInstanceByName(s);
+        com.qinyuan15.utils.security.User user = userDao.getInstanceByName(s);
         if (user == null) {
             return null;
         }

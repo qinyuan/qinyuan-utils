@@ -11,24 +11,29 @@ import java.io.InputStreamReader;
  */
 public class CommandUtils {
 
+    /**
+     * Execute external command
+     *
+     * @param command external command
+     * @return a pair whose key is exit value and value is execute result string
+     */
     public static Pair<Integer, String> run(final String command) {
         try {
-            final Process process = Runtime.getRuntime().exec(command);
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(
+            Process process = Runtime.getRuntime().exec(command);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
                     process.getInputStream()));
 
-            final StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
                 sb.append(line);
                 sb.append("\n");
             }
 
-            // 需要注意的是，exitValue要在结果读取结束之后再获取，否则可能会造成阻塞
+            // we must fetch exitValue after result read, or program may block
             int exitValue = process.waitFor();
 
             return Pair.of(exitValue, sb.toString());
-            //return new Pair<>(exitValue, sb.toString());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

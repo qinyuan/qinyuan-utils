@@ -5,6 +5,7 @@ package com.qinyuan15.utils.security;
  * Created by qinyuan on 15-4-22.
  */
 public interface IUserDao {
-    IUser getInstanceByName(String username);
+    User getInstanceByName(String username);
+
     Integer getIdByName(String username);
 }

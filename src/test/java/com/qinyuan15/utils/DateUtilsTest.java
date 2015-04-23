@@ -1,6 +1,5 @@
 package com.qinyuan15.utils;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.junit.Test;
 
 import java.sql.Date;
@@ -52,6 +51,13 @@ public class DateUtilsTest {
     }
 
     @Test
+    public void testThreeDayAgo() {
+        Date date = DateUtils.threeDaysAgo();
+        assertThat(System.currentTimeMillis() - 1000L * 3600 * 24 * 3 - date.getTime())
+                .isLessThan(50).isGreaterThan(-50);
+    }
+
+    @Test
     public void testGetDayDiff() throws Exception {
         Date date1 = DateUtils.newDate("2012-02-28");
         Date date2 = DateUtils.newDate("2012-03-26");
@@ -64,6 +70,7 @@ public class DateUtilsTest {
     @Test
     public void testIsDate() throws Exception {
         assertThat(DateUtils.isDate("1022-12-12")).isTrue();
+        assertThat(DateUtils.isDate("2012-1-1")).isTrue();
         assertThat(DateUtils.isDate("1012-1212")).isFalse();
     }
 
@@ -74,7 +81,23 @@ public class DateUtilsTest {
     }
 
     @Test
+    public void testIsDateOrDateTime() {
+        assertThat(DateUtils.isDateOrDateTime("2012-1-1")).isTrue();
+        assertThat(DateUtils.isDateOrDateTime("2012-01-01")).isTrue();
+        assertThat(DateUtils.isDateOrDateTime("2012-1212")).isFalse();
+
+        assertThat(DateUtils.isDateOrDateTime("1012-01-01 12:13:40")).isTrue();
+        assertThat(DateUtils.isDateOrDateTime("1012-01-01 12:13:404")).isFalse();
+    }
+
+    @Test
     public void testGetDatePart() throws Exception {
         assertThat(DateUtils.getDatePart("2012-12-12 10:10:10")).isEqualTo("2012-12-12");
+    }
+
+    @Test
+    public void testAdjustDateStringFromDB() {
+        assertThat(DateUtils.adjustDateStringFromDB("2015-12-12 12:12:12.12"))
+                .isEqualTo("2015-12-12 12:12:12");
     }
 }

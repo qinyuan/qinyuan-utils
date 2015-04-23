@@ -14,7 +14,7 @@ public class ThreadUtils {
     }
 
     public static void sleep(double second) {
-        sleepByMillSecond((long) second * 1000);
+        sleepByMillSecond((long) (second * 1000.0));
     }
 
     private static void sleepByMillSecond(long millSecond) {

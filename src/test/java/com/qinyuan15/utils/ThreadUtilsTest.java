@@ -15,6 +15,14 @@ public class ThreadUtilsTest {
         ThreadUtils.sleep(5);
     }
 
+    @Test
+    public void testSleep2() {
+        for (int i = 0; i < 5; i++) {
+            System.out.println(i);
+            ThreadUtils.sleep(0.25);
+        }
+    }
+
     private class TestThread extends Thread {
         private int interval;
 

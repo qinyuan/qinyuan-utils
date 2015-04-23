@@ -1,6 +1,6 @@
 package com.qinyuan15.utils.mvc;
 
-import java.lang.Math;import java.lang.String;import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,9 +37,7 @@ public class PaginationAnchor {
     private final static String TO_FIRST_TEXT = "&laquo;";
     private final static String TO_LAST_TEXT = "&raquo;";
 
-    public static List<PaginationAnchor> create(String pageUrl, int pageCount, int visibleAnchorCount,
-                                                int currentPageNumber) {
-
+    private static String adjustUrl(String pageUrl) {
         if (pageUrl.contains("?")) {
             if (!pageUrl.endsWith("&")) {
                 pageUrl += "&";
@@ -47,15 +45,23 @@ public class PaginationAnchor {
         } else {
             pageUrl += "?";
         }
+        return pageUrl;
+    }
+
+    public static List<PaginationAnchor> create(String pageUrl, int pageCount, int visibleAnchorCount,
+                                                int currentPageNumber) {
+        pageUrl = adjustUrl(pageUrl);
 
         List<PaginationAnchor> anchors = new ArrayList<>();
 
+        // anchor to first page
         if (currentPageNumber == 1) {
             anchors.add(new PaginationAnchor(null, TO_FIRST_TEXT, null));
         } else {
             anchors.add(new PaginationAnchor(pageUrl + "pageNumber=1", TO_FIRST_TEXT, "第一页"));
         }
 
+        // calculate start page number and end page number
         int startPageNumber, endPageNumber;
         if (currentPageNumber <= (visibleAnchorCount + 1) / 2) {
             startPageNumber = 1;
@@ -68,6 +74,7 @@ public class PaginationAnchor {
             endPageNumber = startPageNumber + visibleAnchorCount - 1;
         }
 
+        // anchors to each page
         for (int i = startPageNumber; i <= endPageNumber; i++) {
             if (i == currentPageNumber) {
                 anchors.add(new PaginationAnchor(null, i, null));
@@ -76,7 +83,7 @@ public class PaginationAnchor {
             }
         }
 
-
+        // anchors to last page
         if (currentPageNumber == pageCount) {
             anchors.add(new PaginationAnchor(null, TO_LAST_TEXT, null));
         } else {

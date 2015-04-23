@@ -38,11 +38,8 @@ public class ChineseUtils {
                 //    c = 'A';
                 sb.append(c);
             }
-            if (upperCase) {
-                return sb.toString().toUpperCase();
-            } else {
-                return sb.toString().toLowerCase();
-            }
+
+            return upperCase ? sb.toString().toUpperCase() : sb.toString().toLowerCase();
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }

@@ -35,6 +35,12 @@ public class DateUtils {
         }
     }
 
+    /**
+     * Convert date value to long style string such as "2015-01-01 12:12:12"
+     *
+     * @param date date value to convert
+     * @return long style date string
+     */
     public static String toLongString(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return dateFormat.format(date);
@@ -95,6 +101,17 @@ public class DateUtils {
         return new Date(System.currentTimeMillis() - secondsOfThreeMonths * 1000);
     }
 
+    /**
+     * Adjust date String queried from database directly
+     * <p>
+     * In MySQL, the date string queried from database looks like
+     * "2015-01-01 15:15:15.5", we need to convert it to format such as
+     * "2015-01-01 15:15:15"
+     * </p>
+     *
+     * @param dateString date string queried from MySQL
+     * @return adjusted date string
+     */
     public static String adjustDateStringFromDB(String dateString) {
         return dateString == null ? null : dateString.replaceAll("\\.\\d*$", "");
     }
