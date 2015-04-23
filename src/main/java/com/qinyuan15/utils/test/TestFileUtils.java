@@ -1,4 +1,4 @@
-package com.qinyuan15.utils.lib;
+package com.qinyuan15.utils.test;
 
 import org.apache.commons.io.FileUtils;
 
@@ -10,7 +10,7 @@ import java.io.IOException;
  * Created by qinyuan on 15-1-2.
  */
 public class TestFileUtils {
-    public static String tempDir = System.getProperty("java.io.tmpdir");
+    public final static String tempDir = System.getProperty("java.io.tmpdir");
 
     private TestFileUtils() {
     }

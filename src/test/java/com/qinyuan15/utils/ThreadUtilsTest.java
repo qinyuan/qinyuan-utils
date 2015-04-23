@@ -1,6 +1,5 @@
 package com.qinyuan15.utils;
 
-import com.qinyuan15.utils.ThreadUtils;
 import org.junit.Test;
 
 /**
@@ -10,12 +9,10 @@ import org.junit.Test;
 public class ThreadUtilsTest {
     @Test
     public void testSleep() throws Exception {
-        /*
-        new TestThread(3).start();
+        new TestThread(2).start();
         new TestThread(1).start();
 
-        ThreadUtils.sleep(20);
-        */
+        ThreadUtils.sleep(5);
     }
 
     private class TestThread extends Thread {
@@ -28,7 +25,7 @@ public class ThreadUtilsTest {
         @Override
         public void run() {
             while (true) {
-                System.out.println(interval + " " + System.currentTimeMillis() / 1000);
+                System.out.println("Thread: " + interval);
                 ThreadUtils.sleep(interval);
             }
         }

@@ -1,9 +1,9 @@
 package com.qinyuan15.utils;
 
-import com.qinyuan15.utils.DateUtils;
 import org.junit.Test;
 
 import java.sql.Date;
+import java.util.Calendar;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,8 +29,7 @@ public class DateUtilsTest {
 
     @Test
     public void testGetCurrentHour() {
-        int currentHour = DateUtils.currentHour();
-        System.out.println(currentHour);
+        assertThat(DateUtils.currentHour()).isEqualTo(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
     }
 
     @Test
@@ -47,7 +46,8 @@ public class DateUtilsTest {
     @Test
     public void testThreeMonthAgo() throws Exception {
         Date date = DateUtils.threeMonthsAgo();
-        System.out.println(date);
+        assertThat(System.currentTimeMillis() - 1000L * 3600 * 24 * 90 - date.getTime())
+                .isLessThan(50).isGreaterThan(-50);
     }
 
     @Test

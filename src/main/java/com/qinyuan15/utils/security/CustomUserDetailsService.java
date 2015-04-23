@@ -1,6 +1,5 @@
 package com.qinyuan15.utils.security;
 
-//import com.qinyuan15.utils.dao.UserDao;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -14,16 +13,22 @@ import java.util.HashSet;
 /**
  * Class to provide custom authentication
  * Created by qinyuan on 15-3-5.
- *//*
+ */
 public class CustomUserDetailsService implements UserDetailsService {
+    private IUserDao userDao;
+
+    public CustomUserDetailsService(IUserDao userDao) {
+        this.userDao = userDao;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        com.qinyuan15.utils.dao.User user = new UserDao().getInstanceByName(s);
+        IUser user = userDao.getInstanceByName(s);
         if (user == null) {
             return null;
         }
 
-        Collection<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+        Collection<GrantedAuthority> authorities = new HashSet<>();
         if (user.getRole() != null) {
             for (String role : user.getRole().split(",")) {
                 authorities.add(new SimpleGrantedAuthority(role));
@@ -32,4 +37,4 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return new User(user.getUsername(), user.getPassword(), authorities);
     }
-}*/
+}

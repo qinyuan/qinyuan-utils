@@ -1,8 +1,6 @@
-package com.qinyuan15.utils.utils.file;
+package com.qinyuan15.utils.file;
 
-import com.qinyuan15.utils.file.FileType;
-import com.qinyuan15.utils.file.FileTypeJudge;
-import com.qinyuan15.utils.lib.TestFileUtils;
+import com.qinyuan15.utils.test.TestFileUtils;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

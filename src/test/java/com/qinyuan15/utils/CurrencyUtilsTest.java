@@ -1,6 +1,5 @@
 package com.qinyuan15.utils;
 
-import com.qinyuan15.utils.CurrencyUtils;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -1,6 +1,5 @@
 package com.qinyuan15.utils.security;
 
-//import com.qinyuan15.utils.dao.UserDao;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,41 +8,48 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Tool class about security
+ * class to query security information
  * Created by qinyuan on 15-3-6.
- *//*
-public class SecurityUtils {
+ */
+public class SecuritySearcher {
     public final static String ADMIN = "ROLE_ADMIN";
     public final static String SUPPER_ADMIN = "ROLE_SUPPER_ADMIN";
 
-    private SecurityUtils() {
+    private final IUserDao userDao;
+
+    public SecuritySearcher(IUserDao userDao) {
+        this.userDao = userDao;
     }
 
-    public static Integer getUserId() {
-        return new UserDao().getIdByName(getUsername());
+    public Integer getUserId() {
+        return this.userDao.getIdByName(getUsername());
     }
 
-    public static String getUsername() {
+    public String getUsername() {
         return getUserDetails().getUsername();
     }
 
-    public static UserDetails getUserDetails() {
+    public UserDetails getUserDetails() {
         return (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
-    public static List<String> getAuthorities() {
-        List<String> authorities = new ArrayList<String>();
+    public List<String> getAuthorities() {
+        List<String> authorities = new ArrayList<>();
         for (GrantedAuthority authority : getUserDetails().getAuthorities()) {
             authorities.add(authority.getAuthority());
         }
         return authorities;
     }
 
-    public static boolean isAdmin() {
-        return getAuthorities().contains(ADMIN);
+    public boolean hasAuthority(String roleName) {
+        return getAuthorities().contains(roleName);
     }
 
-    public static boolean isSupperAdmin() {
-        return getAuthorities().contains(SUPPER_ADMIN);
+    public boolean isAdmin() {
+        return hasAuthority(ADMIN);
     }
-}*/
+
+    public boolean isSupperAdmin() {
+        return hasAuthority(SUPPER_ADMIN);
+    }
+}
