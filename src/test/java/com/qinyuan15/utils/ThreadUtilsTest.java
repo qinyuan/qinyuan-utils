@@ -1,5 +1,6 @@
 package com.qinyuan15.utils;
 
+import com.qinyuan15.utils.concurrent.ThreadUtils;
 import org.junit.Test;
 
 /**

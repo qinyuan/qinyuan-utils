@@ -1,4 +1,4 @@
-package com.qinyuan15.utils;
+package com.qinyuan15.utils.concurrent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
