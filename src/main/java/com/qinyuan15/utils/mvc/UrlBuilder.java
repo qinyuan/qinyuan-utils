@@ -6,8 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,19 +61,10 @@ public class UrlBuilder {
                 continue;
             }
 
-            keyValues.add(entry.getKey() + "=" + encode(value));
+            keyValues.add(entry.getKey() + "=" + UrlUtils.encode(value.toString()));
         }
 
         String paramsString = Joiner.on("&").join(keyValues);
         return url + paramsString;
-    }
-
-    private String encode(Object paramValue) {
-        try {
-            return URLEncoder.encode(paramValue.toString(), "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            LOGGER.error("Fail to encode url {}, info: {}", paramValue, e);
-            return paramValue.toString();
-        }
     }
 }

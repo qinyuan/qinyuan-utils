@@ -106,11 +106,11 @@ public class PaginationAttributeAdder {
             }
 
             if (value instanceof String) {
-                parameters.add(entry.getKey() + "=" + value);
+                parameters.add(entry.getKey() + "=" + UrlUtils.encode((String) value));
             } else if (value.getClass().isArray()) {
                 String[] strings = (String[]) value;
                 if (strings.length > 0) {
-                    parameters.add(entry.getKey() + "=" + strings[0]);
+                    parameters.add(entry.getKey() + "=" + UrlUtils.encode(strings[0]));
                 }
             }
         }
