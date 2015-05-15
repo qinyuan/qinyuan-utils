@@ -1,5 +1,8 @@
 package com.qinyuan15.utils.http;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Pool class of HTTP client
  * Created by qinyuan on 15-2-23.
@@ -14,6 +17,14 @@ public class HttpClientPool {
 
     public void setProxySpeedRecorder(ProxySpeedRecorder proxySpeedRecorder) {
         this.proxySpeedRecorder = proxySpeedRecorder;
+    }
+
+    public List<HttpClient> next(int n) {
+        List<HttpClient> httpClients = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            httpClients.add(next());
+        }
+        return httpClients;
     }
 
     public HttpClient next() {
