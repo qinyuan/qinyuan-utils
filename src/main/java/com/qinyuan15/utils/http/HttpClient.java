@@ -37,6 +37,10 @@ public class HttpClient {
         this.proxy = proxy;
     }
 
+    public IProxy getProxy() {
+        return this.proxy;
+    }
+
     public void setProxySpeedRecorder(ProxySpeedRecorder proxySpeedRecorder) {
         this.proxySpeedRecorder = proxySpeedRecorder;
     }
