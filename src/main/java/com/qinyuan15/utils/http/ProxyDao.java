@@ -6,7 +6,7 @@ import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.Exception;import java.lang.RuntimeException;import java.util.List;
+import java.util.List;
 
 /**
  * Data access object of Proxy
@@ -21,6 +21,24 @@ public class ProxyDao {
 
     public List<Proxy> getInstances(int size) {
         return HibernateUtils.getList(Proxy.class, "ORDER BY speed ASC,rand()", 0, size);
+    }
+
+    public List<Proxy> getSlowInstances(int size) {
+        return HibernateUtils.getList(Proxy.class,
+                "speed=(SELECT MAX(speed) FROM Proxy) ORDER BY rand()", 0, size);
+    }
+
+    public List<Proxy> getSlowInstances() {
+        return HibernateUtils.getList(Proxy.class,
+                "speed=(SELECT MAX(speed) FROM Proxy) ORDER BY rand()");
+    }
+
+    public int getCount() {
+        return (int) HibernateUtils.getCount(Proxy.class);
+    }
+
+    public int getSlowCount() {
+        return (int) HibernateUtils.getCount(Proxy.class, "speed=(SELECT MAX(speed) FROM Proxy)");
     }
 
     public void save(List<Proxy> proxies) {
