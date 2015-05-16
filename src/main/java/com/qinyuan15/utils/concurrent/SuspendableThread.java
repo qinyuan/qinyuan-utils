@@ -9,10 +9,16 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class SuspendableThread extends Thread {
     private final static Logger LOGGER = LoggerFactory.getLogger(SuspendableThread.class);
-    private final static int DEFAULT_INTERVAL = 10;
+    public final static int DEFAULT_INTERVAL = 10;
+
+    private int updateInterval = DEFAULT_INTERVAL;
     private boolean running = false;
 
-    public void setRunning(boolean running) {
+    protected final void setUpdateInterval(int updateInterval) {
+        this.updateInterval = updateInterval;
+    }
+
+    public synchronized void setRunning(boolean running) {
         this.running = running;
     }
 
@@ -20,13 +26,13 @@ public abstract class SuspendableThread extends Thread {
     public final void run() {
         while (true) {
             if (this.running) {
-                ThreadUtils.sleep(DEFAULT_INTERVAL);
-            } else {
                 try {
                     runJob();
                 } catch (Throwable e) {
                     LOGGER.error("error in running SuspendableThread, info: {}", e);
                 }
+            } else {
+                ThreadUtils.sleep(updateInterval);
             }
         }
     }
