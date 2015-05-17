@@ -20,6 +20,12 @@ public class ProxyDaoTest {
     }
 
     @Test
+    public void testGetInstances2() {
+        List<Proxy> proxies = dao.getInstances();
+        System.out.println(proxies.size());
+    }
+
+    @Test
     public void testGetSlowInstances() {
         List<Proxy> proxies = dao.getSlowInstances(20);
         for (Proxy proxy : proxies) {

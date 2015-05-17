@@ -16,16 +16,16 @@ public class ProxyDao {
     private final static Logger LOGGER = LoggerFactory.getLogger(ProxyDao.class);
 
     public List<Proxy> getInstances() {
-        return HibernateUtils.getList(Proxy.class, "ORDER BY speed asc, id desc");
+        return HibernateUtils.getList(Proxy.class, "ORDER BY speed ASC,speedUpdateTime ASC");
     }
 
     public List<Proxy> getInstances(int size) {
-        return HibernateUtils.getList(Proxy.class, "ORDER BY speed ASC,rand()", 0, size);
+        return HibernateUtils.getList(Proxy.class, "ORDER BY speed ASC,speedUpdateTime ASC", 0, size);
     }
 
     public List<Proxy> getSlowInstances(int size) {
         return HibernateUtils.getList(Proxy.class,
-                "speed=(SELECT MAX(speed) FROM Proxy) ORDER BY rand()", 0, size);
+                "speed=(SELECT MAX(speed) FROM Proxy) ORDER BY speedUpdateTime ASC", 0, size);
     }
 
     public List<Proxy> getSlowInstances() {

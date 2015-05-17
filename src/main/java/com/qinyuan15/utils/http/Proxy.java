@@ -1,7 +1,6 @@
 package com.qinyuan15.utils.http;
 
 import com.qinyuan15.utils.hibernate.PersistObject;
-import com.qinyuan15.utils.http.IProxy;import java.lang.Integer;import java.lang.Override;import java.lang.String;
 
 /**
  * Class to record Proxy Server information
@@ -15,6 +14,15 @@ public class Proxy extends PersistObject implements IProxy {
     private Integer port;
     private String type = DEFAULT_TYPE;
     private Integer speed = Integer.MAX_VALUE;
+    private String speedUpdateTime;
+
+    public String getSpeedUpdateTime() {
+        return speedUpdateTime;
+    }
+
+    public void setSpeedUpdateTime(String speedUpdateTime) {
+        this.speedUpdateTime = speedUpdateTime;
+    }
 
     public String getHost() {
         return host;

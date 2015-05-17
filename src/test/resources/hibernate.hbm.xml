@@ -12,5 +12,6 @@
         <property name="port"/>
         <property name="type"/>
         <property name="speed"/>
+        <property name="speedUpdateTime" column="speed_update_time"/>
     </class>
 </hibernate-mapping>

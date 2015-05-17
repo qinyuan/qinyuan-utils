@@ -5,19 +5,23 @@ package com.qinyuan15.utils.http;
  * Created by qinyuan on 15-4-23.
  */
 public interface IProxy {
-    public String getHost();
+    String getHost();
 
-    public Integer getPort();
+    Integer getPort();
 
-    public String getType();
+    String getType();
 
-    public Integer getSpeed();
+    Integer getSpeed();
 
-    public void setHost(String host);
+    void setHost(String host);
 
-    public void setPort(Integer port);
+    void setPort(Integer port);
 
-    public void setType(String type);
+    void setType(String type);
 
-    public void setSpeed(Integer speed);
+    void setSpeed(Integer speed);
+
+    String getSpeedUpdateTime();
+
+    void setSpeedUpdateTime(String time);
 }
