@@ -25,7 +25,7 @@ public class HttpClient {
     public final static int DEFAULT_TIMEOUT = 10000;
     public final static String DEFAULT_USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36";
 
-    private CloseableHttpClient client;
+    private final HttpClientBuilder clientBuilder = HttpClientBuilder.create();
     private IProxy proxy;
     private int timeout = DEFAULT_TIMEOUT;
     private int requestTimeout = DEFAULT_TIMEOUT;
@@ -61,11 +61,6 @@ public class HttpClient {
         return this.lastConnectTime;
     }
 
-    public HttpClient() {
-        HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
-        client = httpClientBuilder.build();
-    }
-
     public CloseableHttpResponse getResponse(String url) throws IOException {
         if (!url.contains("://")) {
             url = "http://" + url;
@@ -83,7 +78,7 @@ public class HttpClient {
         get.setConfig(configBuilder.build());
 
         LOGGER.info("connecting {} with proxy {}", url, proxy);
-        return client.execute(get);
+        return clientBuilder.build().execute(get);
     }
 
     public HttpResponse get(String url) {
