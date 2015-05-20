@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
  * Thread that is can be suspended
  * Created by qinyuan on 15-5-15.
  */
-public abstract class SuspendableThread extends Thread {
+public abstract class SuspendableThread extends Thread implements Suspendable {
     private final static Logger LOGGER = LoggerFactory.getLogger(SuspendableThread.class);
     public final static int DEFAULT_INTERVAL = 10;
 
