@@ -5,7 +5,6 @@ import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
@@ -23,13 +22,13 @@ public class HttpClient {
     private final static Logger LOGGER = LoggerFactory.getLogger(HttpClient.class);
     // default connection timeout is 10 seconds
     public final static int DEFAULT_TIMEOUT = 10000;
-    public final static String DEFAULT_USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36";
+    private final static HttpUserAgentBuilder userAgentBuilder = new HttpUserAgentBuilder();
 
     private final HttpClientBuilder clientBuilder = HttpClientBuilder.create();
     private IProxy proxy;
     private int timeout = DEFAULT_TIMEOUT;
     private int requestTimeout = DEFAULT_TIMEOUT;
-    private String userAgent = DEFAULT_USER_AGENT;
+    private String userAgent = userAgentBuilder.buildRandomly();
     private int lastConnectTime = Integer.MAX_VALUE;
     private ProxySpeedRecorder proxySpeedRecorder;
 

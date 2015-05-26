@@ -47,7 +47,7 @@ public class HibernateUtils {
             session.getTransaction().commit();
         } catch (Throwable e) {
             LOGGER.error("fail to commit: {}", e);
-            throw new RuntimeException(e);
+            throw e;
         } finally {
             session.close();    /// ensure session is closed
         }
@@ -59,7 +59,7 @@ public class HibernateUtils {
             return (Integer) session.save(object);
         } catch (Throwable e) {
             LOGGER.error("fail to save: {}", e);
-            throw new RuntimeException(e);
+            throw e;
         } finally {
             commit(session);    // ensure session is closed
         }
@@ -71,7 +71,7 @@ public class HibernateUtils {
             session.saveOrUpdate(object);
         } catch (Throwable e) {
             LOGGER.error("fail to saveOrUpdate: {}", e);
-            throw new RuntimeException(e);
+            throw e;
         } finally {
             commit(session);    // ensure session is closed
         }
@@ -83,7 +83,7 @@ public class HibernateUtils {
             session.update(object);
         } catch (Throwable e) {
             LOGGER.error("fail to update: {}", e);
-            throw new RuntimeException(e);
+            throw e;
         } finally {
             commit(session);    // ensure session is closed
         }
@@ -91,8 +91,14 @@ public class HibernateUtils {
 
     public static void executeUpdate(String hql) {
         Session session = HibernateUtils.getSession();
-        session.createQuery(hql).executeUpdate();
-        HibernateUtils.commit(session);
+        try {
+            session.createQuery(hql).executeUpdate();
+        } catch (Throwable e) {
+            LOGGER.error("fail to execute update: {}", e);
+            throw e;
+        } finally {
+            commit(session);  // ensure session is closed
+        }
     }
 
     public static void delete(Class<?> clazz, String whereClause) {
@@ -102,7 +108,22 @@ public class HibernateUtils {
     }
 
     public static void deleteAll(Class<?> clazz) {
-        delete(clazz, "1=1");
+        delete(clazz, "");
+    }
+
+    public static void delete(Class<?> clazz, Integer id) {
+        Session session = HibernateUtils.getSession();
+        try {
+            Object object = session.get(clazz, id);
+            if (object != null) {
+                session.delete(object);
+            }
+        } catch (Throwable e) {
+            LOGGER.error("fail to delete: {}", e);
+            throw e;
+        } finally {
+            commit(session);    // ensure session is closed
+        }
     }
 
     private static String adjustWhereClause(String whereClause) {
@@ -115,21 +136,6 @@ public class HibernateUtils {
             return " WHERE " + whereClause;
         } else {
             return whereClause;
-        }
-    }
-
-    public static void delete(Class<?> clazz, Integer id) {
-        Session session = HibernateUtils.getSession();
-        try {
-            Object object = session.get(clazz, id);
-            if (object != null) {
-                session.delete(object);
-            }
-        } catch (Throwable e) {
-            LOGGER.error("fail to delete: {}", e);
-            throw new RuntimeException(e);
-        } finally {
-            commit(session);    // ensure session is closed
         }
     }
 
@@ -179,7 +185,7 @@ public class HibernateUtils {
     }
 
     public static List getList(String hql, int firstResult, int maxResults) {
-        Session session = HibernateUtils.getSession();
+        Session session = getSession();
         try {
             hql = hql.trim();
             if (!hql.toLowerCase().startsWith("from") &&
@@ -191,9 +197,9 @@ public class HibernateUtils {
                 query.setFirstResult(firstResult).setMaxResults(maxResults);
             }
             return query.list();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             LOGGER.error("fail to get list: {}", e);
-            throw new RuntimeException(e);
+            throw e;
         } finally {
             commit(session);
             //session.close();    // ensure session is closed

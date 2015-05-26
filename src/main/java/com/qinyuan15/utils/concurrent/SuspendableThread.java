@@ -18,6 +18,7 @@ public abstract class SuspendableThread extends Thread implements Suspendable {
         this.updateInterval = updateInterval;
     }
 
+    @Override
     public synchronized void setRunning(boolean running) {
         this.running = running;
     }
