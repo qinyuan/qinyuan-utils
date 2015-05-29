@@ -6,7 +6,7 @@ import org.imgscalr.Scalr;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;import java.lang.RuntimeException;import java.lang.String;
+import java.io.IOException;
 
 /**
  * Class to compress image
@@ -44,7 +44,7 @@ public class ImageCompressor {
             height = getHeight();
         }
 
-        if (CommandUtils.run("which convert").getKey().equals(0)) {
+        if (CommandUtils.run("which convert").getExitCode() == 0) {
             compressByImageMagick(targetPath, width, height);
         } else {
             compressByScalr(targetPath, width, height);

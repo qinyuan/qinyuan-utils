@@ -1,5 +1,6 @@
 package com.qinyuan15.utils.database;
 
+import com.qinyuan15.utils.CommandExecuteResult;
 import com.qinyuan15.utils.CommandUtils;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -65,11 +66,19 @@ public class MySQLDump {
         }
 
         String command = binPath + " -h " + host + " -u " + user + " -p" + password +
-                " " + database + " --result-file=" + backupPath;
-        if (CommandUtils.run(command).getKey().equals(0)) {
+                " " + database;// + " --result-file=" + backupPath;
+
+        CommandExecuteResult result = CommandUtils.run(command);
+        if (result.getExitCode() == 0) {
+            try {
+                FileUtils.write(new File(backupPath), result.getSystemOut());
+            } catch (Exception e) {
+                LOGGER.error("fail to write file {}, info: {}", backupPath, e);
+            }
             LOGGER.info("Backup " + database + " to " + backupPath + " successfully!");
         } else {
-            LOGGER.error("Fail to backup " + database + " to " + backupPath);
+            LOGGER.error("Fail to backup {} to {}, command: {}, error info:\n{}",
+                    database, backupPath, command, result.getSystemErr());
             FileUtils.deleteQuietly(new File(backupPath));
         }
     }
