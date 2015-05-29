@@ -17,6 +17,7 @@ public class HibernateMySQLDump {
 
     private final String backupDirectory;
     private String binPath;
+    private String password;
 
     public HibernateMySQLDump(String backupDirectory) {
         this.backupDirectory = backupDirectory;
@@ -24,6 +25,10 @@ public class HibernateMySQLDump {
 
     public void setBinPath(String binPath) {
         this.binPath = binPath;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void run() {
@@ -39,6 +44,9 @@ public class HibernateMySQLDump {
         mySQLDump.setHost(HibernatePropertyUtils.getHost());
         if (StringUtils.hasText(binPath)) {
             mySQLDump.setBinPath(binPath);
+        }
+        if (password != null) {
+            mySQLDump.setPassword(password);
         }
         mySQLDump.run();
     }
