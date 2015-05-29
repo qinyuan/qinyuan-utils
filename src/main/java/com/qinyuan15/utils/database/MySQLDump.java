@@ -58,23 +58,23 @@ public class MySQLDump {
             LOGGER.error("Database is not set!");
         }
 
-        File dir = new File(backupPath);
+        File dir = new File(backupPath).getParentFile();
         if (!dir.isDirectory()) {
             if (!dir.mkdirs()) {
-                LOGGER.error("Fail to create directory {}", backupPath);
+                LOGGER.error("Fail to create directory {}", dir.getAbsolutePath());
             }
         }
 
         String command = binPath + " -h " + host + " -u " + user + " -p" + password +
-                " " + database;// + " --result-file=" + backupPath;
+                " " + database + " --result-file=" + backupPath;
 
         CommandExecuteResult result = CommandUtils.run(command);
         if (result.getExitCode() == 0) {
-            try {
+            /*try {
                 FileUtils.write(new File(backupPath), result.getSystemOut());
             } catch (Exception e) {
                 LOGGER.error("fail to write file {}, info: {}", backupPath, e);
-            }
+            }*/
             LOGGER.info("Backup " + database + " to " + backupPath + " successfully!");
         } else {
             LOGGER.error("Fail to backup {} to {}, command: {}, error info:\n{}",
