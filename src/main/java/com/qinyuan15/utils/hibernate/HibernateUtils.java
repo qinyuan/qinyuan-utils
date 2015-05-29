@@ -26,7 +26,7 @@ public class HibernateUtils {
 
     private static SessionFactory buildSessionFactory() {
         try {
-            Configuration configuration = new Configuration().configure(CONFIG_FILE);
+            Configuration configuration = getConfiguration();
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties()).build();
             return configuration.buildSessionFactory(serviceRegistry);
@@ -34,6 +34,10 @@ public class HibernateUtils {
             LOGGER.error("fail to connect database: {}", e);
             throw e;
         }
+    }
+
+    static Configuration getConfiguration() {
+        return new Configuration().configure(CONFIG_FILE);
     }
 
     public static Session getSession() {

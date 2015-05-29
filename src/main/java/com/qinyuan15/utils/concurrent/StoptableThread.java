@@ -21,6 +21,7 @@ public abstract class StoptableThread extends Thread implements Stoptable {
     @Override
     public void stopSafely() {
         this.running = false;
+        this.interrupt();
     }
 
     public boolean isBlocked() {
