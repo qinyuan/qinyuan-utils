@@ -69,6 +69,21 @@ public class HibernateListBuilder {
         return query;
     }
 
+    public int count(Class<?> clazz) {
+        Session session = HibernateUtils.getSession();
+        try {
+            String hql = "SELECT COUNT(*) FROM " + clazz.getSimpleName() + conditionBuilder.build();
+            @SuppressWarnings("unchecked")
+            List<Long> list = buildQuery(session, hql).list();
+            return (int) ((long) list.get(0));
+        } catch (Throwable e) {
+            LOGGER.error("fail to get count: {}", e);
+            throw e;
+        } finally {
+            session.close();   // ensure session is closed
+        }
+    }
+
     public <T> List<T> build(Class<T> clazz) {
         Session session = HibernateUtils.getSession();
         try {

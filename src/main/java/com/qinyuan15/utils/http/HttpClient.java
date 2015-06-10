@@ -30,7 +30,7 @@ public class HttpClient {
     private int requestTimeout = DEFAULT_TIMEOUT;
     private String userAgent = userAgentBuilder.buildRandomly();
     private int lastConnectTime = Integer.MAX_VALUE;
-    private ProxySpeedRecorder proxySpeedRecorder;
+    private ProxyRecorder proxyRecorder;
 
     public void setProxy(IProxy proxy) {
         this.proxy = proxy;
@@ -40,8 +40,8 @@ public class HttpClient {
         return this.proxy;
     }
 
-    public void setProxySpeedRecorder(ProxySpeedRecorder proxySpeedRecorder) {
-        this.proxySpeedRecorder = proxySpeedRecorder;
+    public void setProxyRecorder(ProxyRecorder proxyRecorder) {
+        this.proxyRecorder = proxyRecorder;
     }
 
     public void setTimeout(int timeout) {
@@ -103,15 +103,21 @@ public class HttpClient {
     }
 
     private void recordSpeed() {
-        if (this.proxySpeedRecorder != null) {
-            this.proxySpeedRecorder.recordSpeed(proxy, this.lastConnectTime);
+        if (this.proxyRecorder != null) {
+            this.proxyRecorder.recordSpeed(proxy, this.lastConnectTime);
         }
     }
 
     /**
      * After request, feed back that the request is rejected by validating the result
      */
-    public void feedbackRejection() {
+    public void feedbackRejection(String url) {
+        // TODO remove this line someday
+        feedbackError();
+        this.proxyRecorder.recordRejection(proxy, url);
+    }
+
+    public void feedbackError() {
         this.lastConnectTime = Integer.MAX_VALUE;
         this.recordSpeed();
     }

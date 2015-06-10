@@ -70,11 +70,6 @@ public class MySQLDump {
 
         CommandExecuteResult result = CommandUtils.run(command);
         if (result.getExitCode() == 0) {
-            /*try {
-                FileUtils.write(new File(backupPath), result.getSystemOut());
-            } catch (Exception e) {
-                LOGGER.error("fail to write file {}, info: {}", backupPath, e);
-            }*/
             LOGGER.info("Backup " + database + " to " + backupPath + " successfully!");
         } else {
             LOGGER.error("Fail to backup {} to {}, command: {}, error info:\n{}",

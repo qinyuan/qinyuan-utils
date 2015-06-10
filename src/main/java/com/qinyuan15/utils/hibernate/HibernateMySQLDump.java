@@ -2,6 +2,8 @@ package com.qinyuan15.utils.hibernate;
 
 import com.qinyuan15.utils.DateUtils;
 import com.qinyuan15.utils.database.MySQLDump;
+import com.qinyuan15.utils.file.ZipUtils;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -37,7 +39,8 @@ public class HibernateMySQLDump {
         }
 
         MySQLDump mySQLDump = new MySQLDump();
-        mySQLDump.setBackupPath(buildFileName(HibernatePropertyUtils.getDatabase()));
+        String fileName = buildFileName(HibernatePropertyUtils.getDatabase());
+        mySQLDump.setBackupPath(fileName);
         mySQLDump.setDatabase(HibernatePropertyUtils.getDatabase());
         mySQLDump.setUser(HibernatePropertyUtils.getUsername());
         mySQLDump.setPassword(HibernatePropertyUtils.getPassword());
@@ -49,6 +52,8 @@ public class HibernateMySQLDump {
             mySQLDump.setPassword(password);
         }
         mySQLDump.run();
+        ZipUtils.zip(fileName, fileName + ".zip");
+        FileUtils.deleteQuietly(new File(fileName));
     }
 
     private String buildFileName(String databaseName) {

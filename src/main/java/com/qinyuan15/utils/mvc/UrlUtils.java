@@ -24,4 +24,20 @@ public class UrlUtils {
             return url;
         }
     }
+
+    public static String getHost(String url) {
+        int fromIndex = url.indexOf("://");
+        int endIndex;
+        if (fromIndex >= 0) {
+            endIndex = url.indexOf('/', fromIndex + 3);
+        } else {
+            endIndex = url.indexOf('/');
+        }
+
+        if (endIndex > 0) {
+            return url.substring(0, endIndex);
+        } else {
+            return url;
+        }
+    }
 }

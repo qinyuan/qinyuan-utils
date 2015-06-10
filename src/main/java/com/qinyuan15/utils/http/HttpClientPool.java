@@ -9,14 +9,14 @@ import java.util.List;
  */
 public class HttpClientPool {
     private ProxyPool proxyPool;
-    private ProxySpeedRecorder proxySpeedRecorder;
+    private ProxyRecorder proxyRecorder;
 
     public void setProxyPool(ProxyPool proxyPool) {
         this.proxyPool = proxyPool;
     }
 
-    public void setProxySpeedRecorder(ProxySpeedRecorder proxySpeedRecorder) {
-        this.proxySpeedRecorder = proxySpeedRecorder;
+    public void setProxyRecorder(ProxyRecorder proxyRecorder) {
+        this.proxyRecorder = proxyRecorder;
     }
 
     public List<HttpClient> next(int n) {
@@ -32,7 +32,7 @@ public class HttpClientPool {
         if (this.proxyPool != null) {
             clientWrapper.setProxy(this.proxyPool.next());
         }
-        clientWrapper.setProxySpeedRecorder(this.proxySpeedRecorder);
+        clientWrapper.setProxyRecorder(this.proxyRecorder);
         return clientWrapper;
     }
 }
