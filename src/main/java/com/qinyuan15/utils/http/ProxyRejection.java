@@ -1,5 +1,6 @@
 package com.qinyuan15.utils.http;
 
+import com.qinyuan15.utils.DateUtils;
 import com.qinyuan15.utils.hibernate.PersistObject;
 
 /**
@@ -11,6 +12,7 @@ public class ProxyRejection extends PersistObject {
     private String host;
     private String url;
     private String rejectTime;
+    private Integer speed;
 
     public int getProxyId() {
         return proxyId;
@@ -25,7 +27,7 @@ public class ProxyRejection extends PersistObject {
     }
 
     public String getRejectTime() {
-        return rejectTime;
+        return DateUtils.adjustDateStringFromDB(rejectTime);
     }
 
     public void setProxyId(int proxyId) {
@@ -42,5 +44,23 @@ public class ProxyRejection extends PersistObject {
 
     public void setRejectTime(String rejectTime) {
         this.rejectTime = rejectTime;
+    }
+
+    private Proxy proxy;
+
+    public Proxy getProxy() {
+        if (proxy == null) {
+            proxy = new ProxyDao().getInstance(this.proxyId);
+        }
+
+        return proxy;
+    }
+
+    public Integer getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(Integer speed) {
+        this.speed = speed;
     }
 }

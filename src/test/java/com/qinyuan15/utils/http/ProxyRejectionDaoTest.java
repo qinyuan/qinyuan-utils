@@ -9,6 +9,6 @@ import org.junit.Test;
 public class ProxyRejectionDaoTest {
     @Test
     public void testHasInstance() throws Exception {
-        System.out.println(new ProxyRejectionDao().hasInstance("s.etao.com"));
+        System.out.println(new ProxyRejectionDao().hasInstance(1, "s.etao.com"));
     }
 }

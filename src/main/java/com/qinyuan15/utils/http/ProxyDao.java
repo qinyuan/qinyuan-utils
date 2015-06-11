@@ -15,6 +15,11 @@ import java.util.List;
 public class ProxyDao {
     private final static Logger LOGGER = LoggerFactory.getLogger(ProxyDao.class);
 
+    public Proxy getInstance(int id) {
+        return HibernateUtils.get(Proxy.class, id);
+    }
+
+
     public List<Proxy> getInstances() {
         return HibernateUtils.getList(Proxy.class, "ORDER BY speed ASC,speedUpdateTime ASC");
     }
@@ -39,6 +44,10 @@ public class ProxyDao {
 
     public int getSlowCount() {
         return (int) HibernateUtils.getCount(Proxy.class, "speed=(SELECT MAX(speed) FROM Proxy)");
+    }
+
+    public int getFastCount(){
+        return (int) HibernateUtils.getCount(Proxy.class, "speed<>(SELECT MAX(speed) FROM Proxy)");
     }
 
     public void save(List<Proxy> proxies) {

@@ -1,5 +1,6 @@
 package com.qinyuan15.utils.test;
 
+import com.qinyuan15.utils.file.ClasspathFileUtils;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -16,11 +17,17 @@ public class TestFileUtils {
     }
 
     public static String getAbsolutePath(String fileName) {
-        return getFileByName(fileName).getAbsolutePath();
+        File file = getFileByName(fileName);
+        return file == null ? null : file.getAbsolutePath();
     }
 
     private static File getFileByName(String fileName) {
-        return new File("src/test/resources/" + fileName);
+        File file = new File("src/test/resources/" + fileName);
+        if (file.exists()) {
+            return file;
+        } else {
+            return ClasspathFileUtils.getFile(fileName);
+        }
     }
 
     public static String read(String fileName) throws IOException {

@@ -1,6 +1,10 @@
 package com.qinyuan15.utils.http;
 
 import com.qinyuan15.utils.hibernate.HibernateListBuilder;
+import com.qinyuan15.utils.hibernate.HibernateUtils;
+import com.qinyuan15.utils.mvc.PaginationItemFactory;
+
+import java.util.List;
 
 /**
  * Dao about ProxyRejection
@@ -16,5 +20,22 @@ public class ProxyRejectionDao {
                 .addArgument("proxyId", proxyId)
                 .count(ProxyRejection.class);
         return count > 0;
+    }
+
+    public static Factory factory(){
+        return new Factory();
+    }
+
+    public static class Factory implements PaginationItemFactory<ProxyRejection> {
+        @Override
+        public long getCount() {
+            return HibernateUtils.getCount(ProxyRejection.class);
+        }
+
+        @Override
+        public List<ProxyRejection> getInstances(int firstResult, int maxResults) {
+            return HibernateUtils.getList(ProxyRejection.class, "ORDER BY rejectTime DESC, id DESC",
+                    firstResult, maxResults);
+        }
     }
 }

@@ -14,7 +14,7 @@ public class TestFileUtilsTest {
     @Test
     public void testGetAbsolutePath() throws Exception {
         assertThat(new File(TestFileUtils.getAbsolutePath("baidu.html")).isFile()).isTrue();
-        assertThat(new File(TestFileUtils.getAbsolutePath("baidu.htm")).isFile()).isFalse();
+        assertThat(TestFileUtils.getAbsolutePath("baidu.htm")).isNull();
     }
 
     @Test
