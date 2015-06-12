@@ -112,9 +112,9 @@ public class HttpClient {
      * After request, feed back that the request is rejected by validating the result
      */
     public void feedbackRejection(String url) {
+        this.proxyRecorder.recordRejection(proxy, url);
         // TODO remove this line someday
         feedbackError();
-        this.proxyRecorder.recordRejection(proxy, url);
     }
 
     public void feedbackError() {
