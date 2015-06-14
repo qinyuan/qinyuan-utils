@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Tool Class about request
  * Created by qinyuan on 15-3-27.
+ *
+ * @deprecated use qinyuan tag
  */
 public class RequestUtils {
     public final static long VERSION = System.currentTimeMillis();
