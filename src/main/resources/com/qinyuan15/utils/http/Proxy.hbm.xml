@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.qinyuan15.utils.http">
+    <class name="Proxy" table="proxy">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="host"/>
+        <property name="port"/>
+        <property name="type"/>
+        <property name="speed"/>
+        <property name="speedUpdateTime" column="speed_update_time"/>
+    </class>
+    <class name="ProxyRejection" table="proxy_rejection">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="proxyId" column="proxy_id"/>
+        <property name="host"/>
+        <property name="url"/>
+        <property name="rejectTime" column="reject_time"/>
+        <property name="speed"/>
+    </class>
+</hibernate-mapping>

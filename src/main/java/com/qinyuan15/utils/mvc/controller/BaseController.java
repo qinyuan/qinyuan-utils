@@ -69,19 +69,40 @@ public class BaseController {
     }
 
     protected void addCss(String file) {
-        addListAttribute("moreCss", file);
+        addCss(file, true);
+    }
+
+    protected void addCss(String file, boolean version) {
+        addListAttribute("moreCss", new Resource(file, version));
     }
 
     protected void addJs(String file) {
-        addListAttribute("moreJs", file);
+        addJs(file, true);
+    }
+
+    protected void addJs(String file, boolean version) {
+        addListAttribute("moreJs", new Resource(file, version));
     }
 
     protected void addHeadJs(String file) {
-        addListAttribute("headJs", file);
+        addHeadJs(file, true);
+    }
+
+    protected void addHeadJs(String file, boolean version) {
+        addListAttribute("headJs", new Resource(file, version));
     }
 
     protected void addIEJs(String file) {
-        addListAttribute("ieJs", file);
+        addIEJs(file, true);
+    }
+
+    protected void addIEJs(String file, boolean version) {
+        addListAttribute("ieJs", new Resource(file, version));
+    }
+
+    protected void addCssAndJs(String file, boolean version) {
+        addCss(file, version);
+        addJs(file, version);
     }
 
     protected void addCssAndJs(String file) {
@@ -90,9 +111,9 @@ public class BaseController {
     }
 
     @SuppressWarnings("unchecked")
-    protected void addListAttribute(String key, String value) {
+    private void addListAttribute(String key, Resource value) {
         if (request.getAttribute(key) == null) {
-            request.setAttribute(key, new ArrayList<String>());
+            request.setAttribute(key, new ArrayList<Resource>());
         }
         ((List) request.getAttribute(key)).add(value);
     }
@@ -110,5 +131,23 @@ public class BaseController {
 
     protected String fail(String info) {
         return toJson(createResultMap(false, info));
+    }
+
+    public static class Resource {
+        private final String href;
+        private final boolean version;
+
+        private Resource(String href, boolean version) {
+            this.href = href;
+            this.version = version;
+        }
+
+        public String getHref() {
+            return href;
+        }
+
+        public boolean isVersion() {
+            return version;
+        }
     }
 }
