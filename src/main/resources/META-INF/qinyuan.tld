@@ -40,4 +40,15 @@
             <type>boolean</type>
         </attribute>
     </tag>
+    <tag>
+        <name>multipart-form</name>
+        <tag-class>com.qinyuan15.utils.mvc.tag.MultipartForm</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>action</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
 </taglib>

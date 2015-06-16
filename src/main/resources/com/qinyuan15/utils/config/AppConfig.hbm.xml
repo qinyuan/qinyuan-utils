@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="com.qinyuan15.utils.config">
-    <class name="AppConfig" table="proxy">
+    <class name="AppConfig" table="app_config">
         <id name="id" column="id">
             <generator class="identity"/>
         </id>

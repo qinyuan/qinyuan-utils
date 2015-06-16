@@ -1,7 +1,6 @@
 package com.qinyuan15.utils.mvc.tag;
 
 import javax.servlet.jsp.JspException;
-import java.io.IOException;
 
 /**
  * Tag class of js
@@ -16,24 +15,20 @@ public class JsTag extends CssJsBaseTag {
 
     @Override
     public int doEndTag() throws JspException {
-        try {
-            StringBuilder sb = new StringBuilder("<script src=\"");
-            if (!src.startsWith(PREFIX)) {
-                sb.append(JS_PREFIX);
-            }
-            sb.append(src);
-
-            if (!src.endsWith(".js")) {
-                sb.append(".js");
-            }
-
-            sb.append(getVersion());
-            sb.append("\"></script>");
-
-            this.pageContext.getOut().print(sb);
-        } catch (IOException e) {
-            e.printStackTrace();
+        StringBuilder sb = new StringBuilder("<script src=\"");
+        if (!src.startsWith(PREFIX)) {
+            sb.append(JS_PREFIX);
         }
+        sb.append(src);
+
+        if (!src.endsWith(".js")) {
+            sb.append(".js");
+        }
+
+        sb.append(getVersion());
+        sb.append("\"></script>");
+
+        print(sb);
         return EVAL_PAGE;
     }
 }
