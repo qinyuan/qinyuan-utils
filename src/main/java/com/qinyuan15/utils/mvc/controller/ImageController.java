@@ -1,5 +1,6 @@
 package com.qinyuan15.utils.mvc.controller;
 
+import com.qinyuan15.utils.config.ImageConfig;
 import com.qinyuan15.utils.image.ImageDownloader;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
@@ -18,8 +19,10 @@ import java.io.IOException;
 public class ImageController extends BaseController {
     private final static Logger LOGGER = LoggerFactory.getLogger(ImageController.class);
 
+    /*@Autowired
+    protected ImageDownloader imageDownloader;*/
     @Autowired
-    protected ImageDownloader imageDownloader;
+    private ImageConfig imageConfig;
 
     /**
      * web frontend may post a image url or file, this method validate
@@ -32,16 +35,22 @@ public class ImageController extends BaseController {
      * @throws java.io.IOException
      */
     protected String getSavePath(String imageUrl, MultipartFile imageFile, String savePathPrefix) throws IOException {
+        ImageDownloader imageDownloader = new ImageDownloader(imageConfig.getDirectory());
+
         if (isUploadFileNotEmpty(imageFile)) {
             /*
              * If upload file is not empty, move it to certain path
              */
-            if (!savePathPrefix.endsWith("/")) {
+            if (!savePathPrefix.isEmpty() && !savePathPrefix.endsWith("/")) {
                 savePathPrefix = savePathPrefix + "/";
             }
-            String relativePath = savePathPrefix + RandomStringUtils.randomAlphabetic(20)
+
+            String filePath = imageDownloader.getSaveDir();
+            if (!filePath.endsWith("/")) {
+                filePath += "/";
+            }
+            filePath += savePathPrefix + RandomStringUtils.randomAlphabetic(20)
                     + "_" + imageFile.getOriginalFilename();
-            String filePath = imageDownloader.getSaveDir() + "/" + relativePath;
             File file = new File(filePath);
             File parent = file.getParentFile();
             if (!parent.isDirectory() && !parent.mkdirs()) {
@@ -64,11 +73,24 @@ public class ImageController extends BaseController {
         }
     }
 
+    protected String pathToUrl(String path) {
+        path = com.qinyuan15.utils.StringUtils.replaceFirst(path, imageConfig.getDirectory(), "");
+        if (!path.startsWith("/")) {
+            path = "/" + path;
+        }
+        return imageConfig.getProtocal() + "://" + getLocalAddress() + ":" + imageConfig.getPort() + path;
+    }
+
     private String urlToPath(String imageUrl) {
         String localAddress = getLocalAddress();
         int index = imageUrl.indexOf(localAddress);
         if (index >= 0) {
-            return imageDownloader.getSaveDir() + "/" + imageUrl.substring(index + localAddress.length());
+            String path = imageConfig.getDirectory();
+            if (!path.endsWith("/")) {
+                path += "/";
+            }
+            path += imageUrl.substring(index + localAddress.length());
+            return path;
         } else {
             return null;
         }
