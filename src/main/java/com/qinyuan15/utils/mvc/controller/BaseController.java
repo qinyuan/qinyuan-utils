@@ -110,12 +110,17 @@ public class BaseController {
         addJs(file);
     }
 
-    @SuppressWarnings("unchecked")
     private void addListAttribute(String key, Resource value) {
         if (request.getAttribute(key) == null) {
             request.setAttribute(key, new ArrayList<Resource>());
         }
-        ((List) request.getAttribute(key)).add(value);
+        @SuppressWarnings("unchecked")
+        List<Resource> resources = (List) request.getAttribute(key);
+        resources.add(value);
+    }
+
+    protected void setAttribute(String key, Object value) {
+        request.setAttribute(key, value);
     }
 
     private static Map<String, Object> createResultMap(boolean success, Object detail) {
