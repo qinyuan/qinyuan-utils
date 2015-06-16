@@ -9,7 +9,7 @@ import javax.servlet.jsp.JspException;
 public class HandlebarsTemplateTag extends MyTagSupport {
     @Override
     public int doStartTag() throws JspException {
-        print("<script id=\"" + getId() + "\" type=\"text/x-handlebars-template\">");
+        print("<script id=\"" + this.getId() + "\" type=\"text/x-handlebars-template\">");
         return EVAL_PAGE;
     }
 
