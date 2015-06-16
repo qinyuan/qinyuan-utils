@@ -19,8 +19,6 @@ import java.io.IOException;
 public class ImageController extends BaseController {
     private final static Logger LOGGER = LoggerFactory.getLogger(ImageController.class);
 
-    /*@Autowired
-    protected ImageDownloader imageDownloader;*/
     @Autowired
     private ImageConfig imageConfig;
 
@@ -73,27 +71,29 @@ public class ImageController extends BaseController {
         }
     }
 
+    private String getUrlPrefix() {
+        String content = imageConfig.getContext();
+        if (!content.endsWith("/")) {
+            content += "/";
+        }
+        return imageConfig.getProtocal() + "://" + getLocalAddress() + ":" + imageConfig.getPort() +
+                "/" + content;
+    }
+
     protected String pathToUrl(String path) {
         path = com.qinyuan15.utils.StringUtils.replaceFirst(path, imageConfig.getDirectory(), "");
-        if (!path.startsWith("/")) {
-            path = "/" + path;
+        while (path.startsWith("/")) {
+            path = path.substring(1);
         }
-        return imageConfig.getProtocal() + "://" + getLocalAddress() + ":" + imageConfig.getPort() + path;
+        return getUrlPrefix() + path;
     }
 
     private String urlToPath(String imageUrl) {
-        String localAddress = getLocalAddress();
-        int index = imageUrl.indexOf(localAddress);
-        if (index >= 0) {
-            String path = imageConfig.getDirectory();
-            if (!path.endsWith("/")) {
-                path += "/";
-            }
-            path += imageUrl.substring(index + localAddress.length());
-            return path;
-        } else {
-            return null;
+        String path = imageConfig.getDirectory();
+        if (!path.endsWith("/")) {
+            path += "/";
         }
+        return path + imageUrl.substring(getUrlPrefix().length());
     }
 
     private boolean isLocalUrl(String url) {
