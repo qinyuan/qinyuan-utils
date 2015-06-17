@@ -69,6 +69,22 @@ public class HibernateUtils {
         }
     }
 
+    public static void batchSave(List<?> instances) {
+        Session session = getSession();
+        try {
+            for (Object instance : instances) {
+                try {
+                    session.save(instance);
+                } catch (Throwable e) {
+                    LOGGER.error("fail to save: {}", e);
+                    throw e;
+                }
+            }
+        } finally {
+            commit(session);    // ensure session is closed
+        }
+    }
+
     public static void saveOrUpdate(Object object) {
         Session session = getSession();
         try {

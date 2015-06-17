@@ -119,6 +119,16 @@ public class BaseController {
         resources.add(value);
     }
 
+    protected void addJavaScriptData(String key, Object value) {
+        final String mapKey = "javascriptDatas";
+        if (request.getAttribute(mapKey) == null) {
+            request.setAttribute(mapKey, new HashMap<String, String>());
+        }
+        @SuppressWarnings("unchecked")
+        Map<String, String> datas = (Map) request.getAttribute(mapKey);
+        datas.put(key, toJson(value));
+    }
+
     protected void setAttribute(String key, Object value) {
         request.setAttribute(key, value);
     }
