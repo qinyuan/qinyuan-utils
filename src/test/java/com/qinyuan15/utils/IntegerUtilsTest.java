@@ -26,4 +26,21 @@ public class IntegerUtilsTest {
         assertThat(IntegerUtils.isPositive("")).isFalse();
         assertThat(IntegerUtils.isPositive((String) null)).isFalse();
     }
+
+    @Test
+    public void testIsNotNegative() {
+        assertThat(IntegerUtils.isNotNegative(1)).isTrue();
+        assertThat(IntegerUtils.isNotNegative(0)).isTrue();
+        assertThat(IntegerUtils.isNotNegative(-1)).isFalse();
+        assertThat(IntegerUtils.isNotNegative((Integer) null)).isFalse();
+
+    }
+
+    @Test
+    public void testIsNotNegative2() {
+        assertThat(IntegerUtils.isNotNegative("1")).isTrue();
+        assertThat(IntegerUtils.isNotNegative("0")).isTrue();
+        assertThat(IntegerUtils.isNotNegative("-1")).isFalse();
+        assertThat(IntegerUtils.isNotNegative((String) null)).isFalse();
+    }
 }

@@ -12,6 +12,14 @@ public class IntegerUtils {
     }
 
     public static boolean isPositive(String string) {
-        return NumberUtils.isNumber(string) && NumberUtils.toInt(string) > 0;
+        return NumberUtils.isNumber(string) && isPositive(NumberUtils.toInt(string));
+    }
+
+    public static boolean isNotNegative(Integer integer) {
+        return integer != null && integer >= 0;
+    }
+
+    public static boolean isNotNegative(String string) {
+        return NumberUtils.isNumber(string) && isNotNegative(NumberUtils.toInt(string));
     }
 }
