@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public class BaseController {
+    protected final static String BLANK_PAGE = "blank";
 
     @Autowired
     protected HttpServletRequest request;
