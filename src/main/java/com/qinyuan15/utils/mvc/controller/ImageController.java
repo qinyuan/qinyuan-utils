@@ -62,7 +62,7 @@ public class ImageController extends BaseController {
              * If upload file is empty, deal with image url
              */
             if (isLocalUrl(imageUrl)) {
-                return urlToPath(imageUrl);
+                return new ImageUrlAdapter(imageConfig, getLocalAddress()).urlToPath(imageUrl);
             } else {
                 String filePath = imageDownloader.save(imageUrl);
                 LOGGER.info("save upload image to {}", filePath);
@@ -71,37 +71,8 @@ public class ImageController extends BaseController {
         }
     }
 
-    private String getUrlPrefix() {
-        String content = imageConfig.getContext();
-        if (!content.endsWith("/")) {
-            content += "/";
-        }
-        return imageConfig.getProtocal() + "://" + getLocalAddress() + ":" + imageConfig.getPort() +
-                "/" + content;
-    }
-
     public String pathToUrl(String path) {
-        if (path == null) {
-            return null;
-        }
-
-        path = com.qinyuan15.utils.StringUtils.replaceFirst(path, imageConfig.getDirectory(), "");
-        while (path.startsWith("/")) {
-            path = path.substring(1);
-        }
-        return getUrlPrefix() + path;
-    }
-
-    private String urlToPath(String imageUrl) {
-        if (imageUrl == null) {
-            return null;
-        }
-
-        String path = imageConfig.getDirectory();
-        if (!path.endsWith("/")) {
-            path += "/";
-        }
-        return path + imageUrl.substring(getUrlPrefix().length());
+        return new ImageUrlAdapter(imageConfig, getLocalAddress()).pathToUrl(path);
     }
 
     private boolean isLocalUrl(String url) {
