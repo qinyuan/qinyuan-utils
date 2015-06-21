@@ -80,7 +80,11 @@ public class ImageController extends BaseController {
                 "/" + content;
     }
 
-    protected String pathToUrl(String path) {
+    public String pathToUrl(String path) {
+        if (path == null) {
+            return null;
+        }
+
         path = com.qinyuan15.utils.StringUtils.replaceFirst(path, imageConfig.getDirectory(), "");
         while (path.startsWith("/")) {
             path = path.substring(1);
@@ -89,6 +93,10 @@ public class ImageController extends BaseController {
     }
 
     private String urlToPath(String imageUrl) {
+        if (imageUrl == null) {
+            return null;
+        }
+
         String path = imageConfig.getDirectory();
         if (!path.endsWith("/")) {
             path += "/";

@@ -61,52 +61,52 @@ public class BaseController {
         return gson.toJson(obj);
     }
 
-    protected boolean isPositive(Integer intValue) {
+    /*protected boolean isPositive(Integer intValue) {
         return intValue != null && intValue > 0;
     }
 
     protected boolean isPositive(String strValue) {
         return NumberUtils.isNumber(strValue) && NumberUtils.toInt(strValue) > 0;
-    }
+    }*/
 
-    protected void addCss(String file) {
+    public void addCss(String file) {
         addCss(file, true);
     }
 
-    protected void addCss(String file, boolean version) {
+    public void addCss(String file, boolean version) {
         addListAttribute("moreCss", new Resource(file, version));
     }
 
-    protected void addJs(String file) {
+    public void addJs(String file) {
         addJs(file, true);
     }
 
-    protected void addJs(String file, boolean version) {
+    public void addJs(String file, boolean version) {
         addListAttribute("moreJs", new Resource(file, version));
     }
 
-    protected void addHeadJs(String file) {
+    public void addHeadJs(String file) {
         addHeadJs(file, true);
     }
 
-    protected void addHeadJs(String file, boolean version) {
+    public void addHeadJs(String file, boolean version) {
         addListAttribute("headJs", new Resource(file, version));
     }
 
-    protected void addIEJs(String file) {
+    public void addIEJs(String file) {
         addIEJs(file, true);
     }
 
-    protected void addIEJs(String file, boolean version) {
+    public void addIEJs(String file, boolean version) {
         addListAttribute("ieJs", new Resource(file, version));
     }
 
-    protected void addCssAndJs(String file, boolean version) {
+    public void addCssAndJs(String file, boolean version) {
         addCss(file, version);
         addJs(file, version);
     }
 
-    protected void addCssAndJs(String file) {
+    public void addCssAndJs(String file) {
         addCss(file);
         addJs(file);
     }
@@ -120,7 +120,7 @@ public class BaseController {
         resources.add(value);
     }
 
-    protected void addJavaScriptData(String key, Object value) {
+    public void addJavaScriptData(String key, Object value) {
         final String mapKey = "javascriptDatas";
         if (request.getAttribute(mapKey) == null) {
             request.setAttribute(mapKey, new HashMap<String, String>());
@@ -130,7 +130,7 @@ public class BaseController {
         datas.put(key, toJson(value));
     }
 
-    protected void setAttribute(String key, Object value) {
+    public void setAttribute(String key, Object value) {
         request.setAttribute(key, value);
     }
 
