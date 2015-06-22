@@ -83,8 +83,12 @@ public class ImageController extends BaseController {
         return getSavePath(imageUrl, imageFile, "");
     }
 
+    protected boolean isUploadFileEmpty(MultipartFile file) {
+        return file == null || !StringUtils.hasText(file.getOriginalFilename())
+                || file.getSize() <= 0;
+    }
+
     protected boolean isUploadFileNotEmpty(MultipartFile file) {
-        return file != null && StringUtils.hasText(file.getOriginalFilename())
-                && file.getSize() > 0;
+        return !isUploadFileEmpty(file);
     }
 }

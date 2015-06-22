@@ -17,7 +17,7 @@ public class ImageUrlAdapter {
     }
 
     public String pathToUrl(String path) {
-        if (path == null) {
+        if (path == null || path.trim().isEmpty()) {
             return null;
         }
 
