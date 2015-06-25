@@ -19,7 +19,6 @@ public class ProxyDao {
         return HibernateUtils.get(Proxy.class, id);
     }
 
-
     public List<Proxy> getInstances() {
         return HibernateUtils.getList(Proxy.class, "ORDER BY speed ASC,speedUpdateTime ASC");
     }

@@ -16,4 +16,12 @@ public class DoubleUtilsTest {
         assertThat(DoubleUtils.isNotNegative(-0.1)).isFalse();
         assertThat(DoubleUtils.isNotNegative(null)).isFalse();
     }
+
+    @Test
+    public void testIsPositive() {
+        assertThat(DoubleUtils.isPositive(0.0)).isFalse();
+        assertThat(DoubleUtils.isPositive(0.1)).isTrue();
+        assertThat(DoubleUtils.isPositive(-0.1)).isFalse();
+        assertThat(DoubleUtils.isPositive(null)).isFalse();
+    }
 }

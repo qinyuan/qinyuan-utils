@@ -54,6 +54,9 @@ public class DateUtils {
         return new Date(System.currentTimeMillis());
     }
 
+    /**
+     * @return a string represent current time such as "2015-06-26 00:59:23"
+     */
     public static String nowString() {
         return toLongString(now());
     }

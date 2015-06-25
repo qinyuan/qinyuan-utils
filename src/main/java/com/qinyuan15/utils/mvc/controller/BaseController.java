@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.qinyuan15.utils.mvc.UrlUtils;
 import com.qinyuan15.utils.security.SecuritySearcher;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
@@ -60,14 +59,6 @@ public class BaseController {
         Gson gson = builder.create();
         return gson.toJson(obj);
     }
-
-    /*protected boolean isPositive(Integer intValue) {
-        return intValue != null && intValue > 0;
-    }
-
-    protected boolean isPositive(String strValue) {
-        return NumberUtils.isNumber(strValue) && NumberUtils.toInt(strValue) > 0;
-    }*/
 
     public void addCss(String file) {
         addCss(file, true);
@@ -132,6 +123,11 @@ public class BaseController {
 
     public void setAttribute(String key, Object value) {
         request.setAttribute(key, value);
+    }
+
+    public void setAttributeAndJavaScriptData(String key, Object value) {
+        setAttribute(key, value);
+        addJavaScriptData(key, value);
     }
 
     private static Map<String, Object> createResultMap(boolean success, Object detail) {

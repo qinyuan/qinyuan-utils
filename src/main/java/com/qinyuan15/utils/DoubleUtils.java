@@ -9,4 +9,8 @@ public class DoubleUtils {
     public static boolean isNotNegative(Double value) {
         return value != null && value >= 0;
     }
+
+    public static boolean isPositive(Double value) {
+        return value != null && value > 0;
+    }
 }

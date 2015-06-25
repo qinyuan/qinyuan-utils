@@ -100,4 +100,9 @@ public class DateUtilsTest {
         assertThat(DateUtils.adjustDateStringFromDB("2015-12-12 12:12:12.12"))
                 .isEqualTo("2015-12-12 12:12:12");
     }
+
+    @Test
+    public void testNowString() {
+        System.out.println(DateUtils.nowString());
+    }
 }

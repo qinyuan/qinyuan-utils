@@ -12,6 +12,10 @@ import java.util.List;
  */
 public class ProxyRejectionDao {
 
+    public ProxyRejection getInstance(Integer id) {
+        return HibernateUtils.get(ProxyRejection.class, id);
+    }
+
     public boolean hasInstance(int proxyId, String host) {
         int count = new HibernateListBuilder()
                 .addFilter("host=:host")
@@ -22,7 +26,7 @@ public class ProxyRejectionDao {
         return count > 0;
     }
 
-    public static Factory factory(){
+    public static Factory factory() {
         return new Factory();
     }
 
