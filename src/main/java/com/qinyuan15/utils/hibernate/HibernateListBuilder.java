@@ -1,6 +1,7 @@
 package com.qinyuan15.utils.hibernate;
 
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,8 +48,7 @@ public class HibernateListBuilder {
         return this;
     }
 
-    private Query buildQuery(Session session, String hql) {
-        Query query = session.createQuery(hql);
+    private void setParametersOfQuery(Query query) {
         if (firstResult >= 0 && maxResults > 0) {
             query.setFirstResult(firstResult).setMaxResults(maxResults);
         }
@@ -66,6 +66,17 @@ public class HibernateListBuilder {
                 query.setString(key, value.toString());
             }
         }
+    }
+
+    private Query buildQuery(Session session, String hql) {
+        Query query = session.createQuery(hql);
+        setParametersOfQuery(query);
+        return query;
+    }
+
+    private Query buildSQLQuery(Session session, String sql) {
+        SQLQuery query = session.createSQLQuery(sql);
+        setParametersOfQuery(query);
         return query;
     }
 
@@ -90,6 +101,26 @@ public class HibernateListBuilder {
             String hql = "FROM " + clazz.getSimpleName() + conditionBuilder.build();
             @SuppressWarnings("unchecked")
             List<T> list = buildQuery(session, hql).list();
+            return list;
+        } catch (Throwable e) {
+            LOGGER.error("fail to get list: {}", e);
+            throw e;
+        } finally {
+            session.close();   // ensure session is closed
+        }
+    }
+
+    /**
+     * build list by raw SQL
+     *
+     * @return list build by raw SQL
+     */
+    public List<Object[]> buildBySQL(String sql) {
+        Session session = HibernateUtils.getSession();
+        try {
+            sql = sql + conditionBuilder.build();
+            @SuppressWarnings("unchecked")
+            List<Object[]> list = buildSQLQuery(session, sql).list();
             return list;
         } catch (Throwable e) {
             LOGGER.error("fail to get list: {}", e);
