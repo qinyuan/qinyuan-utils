@@ -10,11 +10,17 @@ import java.util.List;
  * Class to build SQL condition
  * Created by qinyuan on 15-5-26.
  */
-public class SQLConditionBuilder {
+class SQLConditionBuilder {
     private final List<String> filters = new ArrayList<>();
     private final List<String> orders = new ArrayList<>();
     private final List<String> groups = new ArrayList<>();
 
+    /**
+     * add filter condition
+     *
+     * @param filter filter clause such as "hello=:hello"
+     * @return Object itself
+     */
     public SQLConditionBuilder addFilter(String filter) {
         if (!StringUtils.hasText(filter)) {
             return this;
