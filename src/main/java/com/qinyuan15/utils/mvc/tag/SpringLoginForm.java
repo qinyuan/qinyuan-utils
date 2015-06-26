@@ -1,26 +1,18 @@
 package com.qinyuan15.utils.mvc.tag;
 
+
 import javax.servlet.jsp.JspException;
 
 /**
- * Tag class of multipart-form
- * Created by qinyuan on 15-6-16.
+ * Tag class of Spring MVC login form
+ * Created by qinyuan on 15-6-26.
  */
-public class MultipartForm extends MyTagSupport {
-
-    private String action;
-
-    public void setAction(String action) {
-        this.action = action;
-    }
-
+public class SpringLoginForm extends MyTagSupport {
     @Override
     public int doStartTag() throws JspException {
         print("<form method=\"post\" ");
         printId();
-        print("action=\"");
-        print(action);
-        print("\" enctype=\"multipart/form-data\">");
+        print("action=\"j_spring_security_check\">");
         return EVAL_PAGE;
     }
 

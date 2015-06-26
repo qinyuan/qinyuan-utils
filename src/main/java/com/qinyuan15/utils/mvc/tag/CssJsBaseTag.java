@@ -15,11 +15,9 @@ public class CssJsBaseTag extends MyTagSupport {
         this.version = version;
     }
 
-    protected String getVersion() {
+    protected void printVersion() {
         if (version) {
-            return "?=" + VERSION;
-        } else {
-            return "";
+            print("?=" + VERSION);
         }
     }
 }

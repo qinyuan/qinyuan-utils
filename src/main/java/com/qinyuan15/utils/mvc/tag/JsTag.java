@@ -15,20 +15,18 @@ public class JsTag extends CssJsBaseTag {
 
     @Override
     public int doEndTag() throws JspException {
-        StringBuilder sb = new StringBuilder("<script src=\"");
+        print("<script src=\"");
         if (!src.startsWith(PREFIX)) {
-            sb.append(JS_PREFIX);
+            print(JS_PREFIX);
         }
-        sb.append(src);
+        print(src);
 
         if (!src.endsWith(".js")) {
-            sb.append(".js");
+            print(".js");
         }
 
-        sb.append(getVersion());
-        sb.append("\"></script>");
-
-        print(sb);
+        printVersion();
+        print("\"></script>");
         return EVAL_PAGE;
     }
 }

@@ -1,5 +1,7 @@
 package com.qinyuan15.utils.mvc.tag;
 
+import org.springframework.util.StringUtils;
+
 import javax.servlet.jsp.tagext.TagSupport;
 
 /**
@@ -15,6 +17,15 @@ public class MyTagSupport extends TagSupport {
             this.pageContext.getOut().print(obj.toString());
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    protected void printId() {
+        String id = this.getId();
+        if (StringUtils.hasText(id)) {
+            print(" id=\"");
+            print(id);
+            print("\" ");
         }
     }
 }

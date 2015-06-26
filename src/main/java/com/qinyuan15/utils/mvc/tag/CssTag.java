@@ -16,21 +16,19 @@ public class CssTag extends CssJsBaseTag {
 
     @Override
     public int doEndTag() throws JspException {
-        StringBuilder sb = new StringBuilder("<link href=\"");
+        print("<link href=\"");
 
         if (!href.startsWith(PREFIX)) {
-            sb.append(CSS_PREFIX);
+            print(CSS_PREFIX);
         }
-        sb.append(href);
+        print(href);
 
         if (!href.endsWith(".css")) {
-            sb.append(".css");
+            print(".css");
         }
 
-        sb.append(getVersion());
-        sb.append("\" rel=\"stylesheet\"/>");
-
-        print(sb);
+        printVersion();
+        print("\" rel=\"stylesheet\"/>");
         return EVAL_PAGE;
     }
 }
