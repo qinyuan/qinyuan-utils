@@ -34,7 +34,7 @@ public class HibernateDeleter {
         Session session = HibernateUtils.getSession();
         try {
             String hql = "DELETE FROM " + clazz.getSimpleName() + conditionBuilder.build();
-            session.createQuery(hql).executeUpdate();
+            this.queryBuilder.buildQuery(session, hql).executeUpdate();
         } catch (Throwable e) {
             LOGGER.error("fail to delete {}, info: {}", clazz.getSimpleName(), e);
             throw e;
@@ -50,7 +50,7 @@ public class HibernateDeleter {
         Session session = HibernateUtils.getSession();
         try {
             sql = sql + conditionBuilder.build();
-            session.createSQLQuery(sql).executeUpdate();
+            this.queryBuilder.buildSQLQuery(session, sql).executeUpdate();
         } catch (Throwable e) {
             LOGGER.error("fail to get list: {}", e);
             throw e;

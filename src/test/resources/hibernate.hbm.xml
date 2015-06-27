@@ -23,4 +23,17 @@
         <property name="url"/>
         <property name="rejectTime" column="reject_time"/>
     </class>
+    <!--<class name="com.qinyuan15.utils.image.ImageMap" table="image_map">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="relateType" column="relate_type"/>
+        <property name="relateId" column="relate_id"/>
+        <property name="xStart" column="x_start"/>
+        <property name="yStart" column="y_start"/>
+        <property name="xEnd" column="x_end"/>
+        <property name="yEnd" column="y_end"/>
+        <property name="href"/>
+        <property name="comment"/>
+    </class>-->
 </hibernate-mapping>
