@@ -86,7 +86,7 @@ public class IdentifyCode {
         blackList.add(remoteAddress);
     }
 
-    public static boolean check(String remoteAddress) {
-        return !blackList.contains(remoteAddress);
+    public static boolean inBlacklist(String remoteAddress) {
+        return blackList.contains(remoteAddress);
     }
 }
