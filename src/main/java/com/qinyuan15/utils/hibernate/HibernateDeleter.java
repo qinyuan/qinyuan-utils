@@ -39,7 +39,7 @@ public class HibernateDeleter {
             LOGGER.error("fail to delete {}, info: {}", clazz.getSimpleName(), e);
             throw e;
         } finally {
-            session.close();   // ensure session is closed
+            HibernateUtils.commit(session);// ensure session is closed
         }
     }
 
@@ -55,7 +55,7 @@ public class HibernateDeleter {
             LOGGER.error("fail to get list: {}", e);
             throw e;
         } finally {
-            session.close();   // ensure session is closed
+            HibernateUtils.commit(session);// ensure session is closed
         }
     }
 
