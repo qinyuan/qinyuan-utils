@@ -11,11 +11,13 @@ import javax.servlet.http.HttpServletResponse;
  * Created by qinyuan on 15-6-28.
  */
 public class IdentityCodeController extends AbstractController {
+    public final static String IDENTITY_CODE_SESSION_KEY = "identityCode";
+
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("image/jpeg");
         String str = IdentifyCode.getPicture(response);
-        request.getSession().setAttribute("identityCode", str);
+        request.getSession().setAttribute(IDENTITY_CODE_SESSION_KEY, str);
         return null;
     }
 }

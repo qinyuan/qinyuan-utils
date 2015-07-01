@@ -16,6 +16,7 @@
         <spring.version>3.2.4.RELEASE</spring.version>
         <jackson.version>2.3.0</jackson.version>
         <powermock.version>1.5.1</powermock.version>
+        <mail.version>1.5.4</mail.version>
     </properties>
 
     <dependencies>
@@ -225,6 +226,16 @@
             <groupId>org.apache.ant</groupId>
             <artifactId>ant</artifactId>
             <version>1.9.4</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>javax.mail-api</artifactId>
+            <version>${mail.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>${mail.version}</version>
         </dependency>
 
         <!-- test dependencies -->

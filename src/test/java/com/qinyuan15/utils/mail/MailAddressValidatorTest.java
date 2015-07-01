@@ -13,7 +13,10 @@ public class MailAddressValidatorTest {
     public void testValidate() throws Exception {
         MailAddressValidator validator = new MailAddressValidator();
         assertThat(validator.validate("2q@qq.com")).isTrue();
+        assertThat(validator.validate("qin.yuan@qq.com")).isTrue();
         assertThat(validator.validate("2&q@qq.com")).isFalse();
         assertThat(validator.validate("HelloWorld")).isFalse();
+        assertThat(validator.validate(null)).isFalse();
+        assertThat(validator.validate("")).isFalse();
     }
 }
