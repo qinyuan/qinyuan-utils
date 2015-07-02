@@ -9,7 +9,7 @@ import org.junit.Test;
 public class SimpleMailSenderTest {
     @Test
     public void testSend() throws Exception {
-        SimpleMailSender sender = new SimpleMailSender("aishenhaoweie@sina.com", "sbsbsb");
+        SimpleMailSender sender = new SimpleMailSender("test_300@sina.com", "test12345");
         sender.send("qinyuan15@qq.com", "hello", "world");
     }
 }

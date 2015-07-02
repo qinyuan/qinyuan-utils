@@ -1,5 +1,7 @@
 package com.qinyuan15.utils.security;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +14,7 @@ import java.util.List;
  * Created by qinyuan on 15-3-6.
  */
 public class SecuritySearcher {
+    private final static Logger LOGGER = LoggerFactory.getLogger(SecuritySearcher.class);
     public final static String ADMIN = "ROLE_ADMIN";
     public final static String SUPPER_ADMIN = "ROLE_SUPPER_ADMIN";
 
@@ -30,12 +33,23 @@ public class SecuritySearcher {
     }
 
     public UserDetails getUserDetails() {
-        return (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Object userDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (userDetails instanceof UserDetails) {
+            return (UserDetails) userDetails;
+        } else {
+            LOGGER.info("userDetails is String, whose value is {}", userDetails);
+            return null;
+        }
     }
 
     public List<String> getAuthorities() {
         List<String> authorities = new ArrayList<>();
-        for (GrantedAuthority authority : getUserDetails().getAuthorities()) {
+        UserDetails userDetails = getUserDetails();
+        if (userDetails == null) {
+            return authorities;
+        }
+
+        for (GrantedAuthority authority : userDetails.getAuthorities()) {
             authorities.add(authority.getAuthority());
         }
         return authorities;
