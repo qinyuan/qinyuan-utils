@@ -34,6 +34,10 @@ class SQLConditionBuilder {
         return this;
     }
 
+    public SQLConditionBuilder addEqualFilter(String field) {
+        return this.addFilter(field + "=:" + field);
+    }
+
     public SQLConditionBuilder addOrder(String field, boolean asc) {
         if (!StringUtils.hasText(field)) {
             return this;

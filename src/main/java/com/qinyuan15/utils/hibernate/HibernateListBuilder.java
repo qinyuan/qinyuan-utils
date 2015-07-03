@@ -27,6 +27,11 @@ public class HibernateListBuilder {
         return this;
     }
 
+    public HibernateListBuilder addEqualFilter(String field, Object value) {
+        conditionBuilder.addEqualFilter(field);
+        return this.addArgument(field, value);
+    }
+
     public HibernateListBuilder addOrder(String field, boolean asc) {
         conditionBuilder.addOrder(field, asc);
         return this;

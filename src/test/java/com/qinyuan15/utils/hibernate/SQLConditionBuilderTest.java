@@ -41,5 +41,8 @@ public class SQLConditionBuilderTest {
 
         builder.addOrder("field4", true);
         assertThat(builder.build()).isEqualTo(" GROUP BY field1,field2 ORDER BY field3 DESC,field4 ASC");
+
+        builder = new SQLConditionBuilder().addEqualFilter("testField");
+        assertThat(builder.build()).isEqualTo(" WHERE (testField=:testField)");
     }
 }
