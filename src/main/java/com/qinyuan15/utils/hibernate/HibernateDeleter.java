@@ -25,6 +25,11 @@ public class HibernateDeleter {
         return this;
     }
 
+    public HibernateDeleter addEqualFilter(String field, Object value) {
+        conditionBuilder.addEqualFilter(field);
+        return this.addArgument(field, value);
+    }
+
     public HibernateDeleter addArgument(String key, Object value) {
         this.queryBuilder.addArgument(key, value);
         return this;

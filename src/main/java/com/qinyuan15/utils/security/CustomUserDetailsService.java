@@ -1,5 +1,6 @@
 package com.qinyuan15.utils.security;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -15,6 +16,8 @@ import java.util.HashSet;
  * Created by qinyuan on 15-3-5.
  */
 public class CustomUserDetailsService implements UserDetailsService {
+    private final static String invalidPassword = RandomStringUtils.random(300);
+    private final static Collection<GrantedAuthority> emptyGrantedAuthority = new HashSet<>();
     private IUserDao userDao;
 
     public CustomUserDetailsService(IUserDao userDao) {
@@ -25,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         com.qinyuan15.utils.security.User user = userDao.getInstanceByName(s);
         if (user == null) {
-            return null;
+            return new User(s, invalidPassword, emptyGrantedAuthority);
         }
 
         Collection<GrantedAuthority> authorities = new HashSet<>();

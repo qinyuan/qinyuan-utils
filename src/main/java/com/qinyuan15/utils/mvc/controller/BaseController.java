@@ -141,6 +141,10 @@ public class BaseController {
         return toJson(createResultMap(true, null));
     }
 
+    protected String success(String detail) {
+        return toJson(createResultMap(true, detail));
+    }
+
     protected String fail(String info) {
         return toJson(createResultMap(false, info));
     }
