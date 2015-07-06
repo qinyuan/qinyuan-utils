@@ -5,7 +5,7 @@ import com.qinyuan15.utils.IntegerUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.util.StringUtils;
 
-import java.lang.Class;import java.lang.Exception;import java.lang.Integer;import java.lang.Object;import java.lang.RuntimeException;import java.lang.String;import java.lang.SuppressWarnings;import java.util.List;
+import java.util.List;
 
 /**
  * Dao about Ranking Persist Object
@@ -16,8 +16,12 @@ public class RankingDao {
     public final static String ASC_ORDER = " ORDER BY ranking ASC";
     public final static String DESC_ORDER = " ORDER BY ranking DESC";
 
+    public <T extends Ranking> T getFirstInstance(Class<T> clazz) {
+        return new HibernateListBuilder().addOrder("ranking", true).getFirstItem(clazz);
+    }
+
     public <T extends Ranking> List<T> getInstances(Class<T> clazz) {
-        return HibernateUtils.getList(clazz, RankingDao.ASC_ORDER);
+        return new HibernateListBuilder().addOrder("ranking", true).build(clazz);
     }
 
     public Integer getMaxRanking(Class<? extends Ranking> clazz) {
