@@ -33,30 +33,11 @@ public class ImageController extends BaseController {
      * @throws java.io.IOException
      */
     protected String getSavePath(String imageUrl, MultipartFile imageFile, String savePathPrefix) throws IOException {
-        ImageDownloader imageDownloader = new ImageDownloader(imageConfig.getDirectory());
-
         if (isUploadFileNotEmpty(imageFile)) {
             /*
-             * If upload file is not empty, move it to certain path
+             * deal with upload file if it's not empty
              */
-            if (!savePathPrefix.isEmpty() && !savePathPrefix.endsWith("/")) {
-                savePathPrefix = savePathPrefix + "/";
-            }
-
-            String filePath = imageDownloader.getSaveDir();
-            if (!filePath.endsWith("/")) {
-                filePath += "/";
-            }
-            filePath += savePathPrefix + RandomStringUtils.randomAlphabetic(20)
-                    + "_" + imageFile.getOriginalFilename();
-            File file = new File(filePath);
-            File parent = file.getParentFile();
-            if (!parent.isDirectory() && !parent.mkdirs()) {
-                LOGGER.error("fail to create directory {}", parent.getAbsolutePath());
-            }
-            imageFile.transferTo(file);
-            LOGGER.info("save upload image to {}", filePath);
-            return filePath;
+            return transferUploadFile(imageFile, savePathPrefix);
         } else {
             /*
              * If upload file is empty, deal with image url
@@ -64,11 +45,46 @@ public class ImageController extends BaseController {
             if (isLocalUrl(imageUrl)) {
                 return new ImageUrlAdapter(imageConfig, getLocalAddress()).urlToPath(imageUrl);
             } else {
-                String filePath = imageDownloader.save(imageUrl);
+                String filePath = getImageDownloader().save(imageUrl);
                 LOGGER.info("save upload image to {}", filePath);
                 return filePath;
             }
         }
+    }
+
+    private ImageDownloader getImageDownloader() {
+        return new ImageDownloader(imageConfig.getDirectory());
+    }
+
+    /**
+     * transfer upload file to certain path
+     *
+     * @param uploadFile     upload file
+     * @param savePathPrefix save path prefix
+     * @return target file to transfer
+     * @throws IOException
+     */
+    protected String transferUploadFile(MultipartFile uploadFile, String savePathPrefix) throws IOException {
+        if (savePathPrefix == null) {
+            savePathPrefix = "";
+        } else if (!savePathPrefix.isEmpty() && !savePathPrefix.endsWith("/")) {
+            savePathPrefix += "/";
+        }
+
+        String filePath = getImageDownloader().getSaveDir();
+        if (!filePath.endsWith("/")) {
+            filePath += "/";
+        }
+        filePath += savePathPrefix + RandomStringUtils.randomAlphabetic(20)
+                + "_" + uploadFile.getOriginalFilename();
+        File file = new File(filePath);
+        File parent = file.getParentFile();
+        if (!parent.isDirectory() && !parent.mkdirs()) {
+            LOGGER.error("fail to create directory {}", parent.getAbsolutePath());
+        }
+        uploadFile.transferTo(file);
+        LOGGER.info("save upload image to {}", filePath);
+        return filePath;
     }
 
     public String pathToUrl(String path) {
