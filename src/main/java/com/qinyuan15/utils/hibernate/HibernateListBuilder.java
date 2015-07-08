@@ -89,6 +89,7 @@ public class HibernateListBuilder {
             if (!hql.toLowerCase().startsWith("from") && !hql.toLowerCase().startsWith("select")) {
                 hql = "FROM " + hql;
             }
+            hql += conditionBuilder.build();
             @SuppressWarnings("unchecked")
             List list = this.queryBuilder.buildQuery(session, hql).list();
             return list;

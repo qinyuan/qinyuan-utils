@@ -1,6 +1,5 @@
 package com.qinyuan15.utils.mvc.controller;
 
-import com.google.common.collect.Sets;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -8,7 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
-import java.util.Set;
 
 /**
  * Controller to save upload image from CKEditor
@@ -20,12 +18,14 @@ public class CKEditorUploadImageController extends ImageController {
     public void index(HttpServletResponse response,
                       @RequestParam(value = "upload", required = true) MultipartFile upload) throws Exception {
         PrintWriter out = response.getWriter();
-        String uploadContentType = request.getContentType();
-        Set<String> contentTypes = Sets.newHashSet("image/pjpeg", "image/jpeg", "image/png", "image/x-png", "image/gif", "image/bmp");
+
+        //String uploadContentType = request.getContentType();
+        /*Set<String> contentTypes = Sets.newHashSet("image/pjpeg", "image/jpeg", "image/png", "image/x-png", "image/gif", "image/bmp");
         if (!contentTypes.contains(uploadContentType)) {
             out.print(getResultContent("", "Invalid file format(must be .jpg/.gif/.bmp/.png"));
             return;
-        }
+        }*/
+
         if (upload.getSize() > 600 * 1024) {
             out.print(getResultContent("", "File must not greater than 600k"));
             return;
