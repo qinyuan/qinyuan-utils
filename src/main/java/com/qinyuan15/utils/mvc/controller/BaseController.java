@@ -149,6 +149,10 @@ public class BaseController {
         return toJson(createResultMap(false, info));
     }
 
+    protected String failByDatabaseError() {
+        return fail("数据库操作失败！");
+    }
+
     public static class Resource {
         private final String href;
         private final boolean version;
