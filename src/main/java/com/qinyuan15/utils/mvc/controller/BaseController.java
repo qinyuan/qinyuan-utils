@@ -153,6 +153,10 @@ public class BaseController {
         return fail("数据库操作失败！");
     }
 
+    protected String failByInvalidParam() {
+        return fail("请求参数无效！");
+    }
+
     public static class Resource {
         private final String href;
         private final boolean version;
