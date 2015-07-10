@@ -29,7 +29,8 @@ public class SecuritySearcher {
     }
 
     public String getUsername() {
-        return getUserDetails().getUsername();
+        UserDetails userDetails = getUserDetails();
+        return userDetails == null ? null : userDetails.getUsername();
     }
 
     public UserDetails getUserDetails() {

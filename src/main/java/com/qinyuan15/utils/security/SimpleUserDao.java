@@ -1,6 +1,7 @@
 package com.qinyuan15.utils.security;
 
 import com.qinyuan15.utils.hibernate.HibernateListBuilder;
+import org.springframework.util.StringUtils;
 
 /**
  * A simple dao to handle user
@@ -9,6 +10,10 @@ import com.qinyuan15.utils.hibernate.HibernateListBuilder;
 public class SimpleUserDao implements IUserDao {
     @Override
     public User getInstanceByName(String username) {
+        if (!StringUtils.hasText(username)) {
+            return null;
+        }
+
         return new HibernateListBuilder()
                 .addFilter("username=:username").addArgument("username", username)
                 .getFirstItem(User.class);
@@ -16,6 +21,10 @@ public class SimpleUserDao implements IUserDao {
 
     @Override
     public Integer getIdByName(String username) {
+        if (!StringUtils.hasText(username)) {
+            return null;
+        }
+
         User user = this.getInstanceByName(username);
         return user == null ? null : user.getId();
     }
