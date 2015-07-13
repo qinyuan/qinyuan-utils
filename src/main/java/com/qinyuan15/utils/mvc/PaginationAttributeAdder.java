@@ -94,7 +94,7 @@ public class PaginationAttributeAdder {
 
         List<String> parameters = new ArrayList<>();
         @SuppressWarnings("unchecked")
-        Set<Map.Entry<String, java.lang.Object>> entries = request.getParameterMap().entrySet();
+        Set<Map.Entry<String, Object>> entries = request.getParameterMap().entrySet();
         for (Map.Entry<String, Object> entry : entries) {
             if (entry.getKey().equals(PAGE_NUMBER_KEY)) {
                 continue;

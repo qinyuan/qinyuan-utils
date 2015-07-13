@@ -5,8 +5,10 @@ import com.google.gson.GsonBuilder;
 import com.qinyuan15.utils.mvc.UrlUtils;
 import com.qinyuan15.utils.security.SecuritySearcher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +19,9 @@ public class BaseController {
 
     @Autowired
     protected HttpServletRequest request;
+
+    @Autowired
+    protected HttpSession session;
 
     @Autowired
     protected SecuritySearcher securitySearcher;
@@ -155,6 +160,17 @@ public class BaseController {
 
     protected String failByInvalidParam() {
         return fail("请求参数无效！");
+    }
+
+    protected boolean validateIdentityCode(String identityCode) {
+        if (!StringUtils.hasText(identityCode)) {
+            return false;
+        }
+
+        String identityCodeInSession = (String) session.getAttribute(IdentityCodeController.IDENTITY_CODE_SESSION_KEY);
+
+        return StringUtils.hasText(identityCodeInSession) &&
+                identityCode.toLowerCase().equals(identityCodeInSession.toLowerCase());
     }
 
     public static class Resource {
