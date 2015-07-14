@@ -25,6 +25,10 @@ public class DateUtilsTest {
         assertThat(date.toString()).isEqualTo("2012-02-28");
         date.setTime(date.getTime() + milliSecondsOfOneDay);
         assertThat(date.toString()).isEqualTo("2012-02-29");
+
+        date = DateUtils.newDate("2011-3-28 12:7:2");
+        assertThat(date.toString()).isEqualTo("2011-03-28");
+        assertThat(DateUtils.toLongString(date)).isEqualTo("2011-03-28 12:07:02");
     }
 
     @Test

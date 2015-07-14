@@ -20,19 +20,25 @@ public class DateUtils {
     }
 
     /**
-     * create Date Object by String such as '2000-12-01'
+     * create Date Object by String such as '2000-12-01' or '2000-12-01 12:12:05'
      *
-     * @param dateStr date String such as '2000-12-01'
+     * @param dateStr date String such as '2000-12-01' or '2000-12-01 13:13:24'
      * @return a {@link java.sql.Date} instance
      */
     public static Date newDate(String dateStr) {
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            return new Date(dateFormat.parse(dateStr).getTime());
+            if (isDate(dateStr)) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                return new Date(dateFormat.parse(dateStr).getTime());
+            } else if (isDateTime(dateStr)) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                return new Date(dateFormat.parse(dateStr).getTime());
+            }
         } catch (ParseException e) {
             LOGGER.error("error in parsing date String '{}': {}", dateStr, e);
             throw new RuntimeException(e);
         }
+        throw new RuntimeException("Invalid date format: '" + dateStr + "'");
     }
 
     /**
