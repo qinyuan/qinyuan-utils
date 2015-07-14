@@ -32,6 +32,15 @@ public class DateUtilsTest {
     }
 
     @Test
+    public void testNewCalendar() {
+        Calendar calendar = DateUtils.newCalendar("2012-12-11");
+        assertThat(DateUtils.toLongString(calendar.getTime())).isEqualTo("2012-12-11 00:00:00");
+
+        calendar = DateUtils.newCalendar("2012-02-29 12:24:36");
+        assertThat(DateUtils.toLongString(calendar.getTime())).isEqualTo("2012-02-29 12:24:36");
+    }
+
+    @Test
     public void testGetCurrentHour() {
         assertThat(DateUtils.currentHour()).isEqualTo(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
     }

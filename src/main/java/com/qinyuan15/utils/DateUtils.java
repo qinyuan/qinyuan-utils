@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * Tool class about date
@@ -42,12 +43,39 @@ public class DateUtils {
     }
 
     /**
+     * Create Calendar object by date string such as '2000-12-15' or '2012-12-01 12:12:23'
+     *
+     * @param dateString date string  such as '2000-12-15' or '2012-12-01 12:12:23'
+     * @return a {@link java.sql.Date} instance
+     */
+    public static Calendar newCalendar(String dateString) {
+        if (isDate(dateString)) {
+            String[] stringArray = dateString.split("-");
+            int year = Integer.parseInt(stringArray[0]);
+            int month = Integer.parseInt(stringArray[1]) - 1;
+            int day = Integer.parseInt(stringArray[2]);
+            return new GregorianCalendar(year, month, day);
+        } else if (isDateTime(dateString)) {
+            String[] stringArray = dateString.split("\\D");
+            int year = Integer.parseInt(stringArray[0]);
+            int month = Integer.parseInt(stringArray[1]) - 1;
+            int day = Integer.parseInt(stringArray[2]);
+            int hour = Integer.parseInt(stringArray[3]);
+            int minute = Integer.parseInt(stringArray[4]);
+            int second = Integer.parseInt(stringArray[5]);
+            return new GregorianCalendar(year, month, day, hour, minute, second);
+        } else {
+            throw new RuntimeException("Invalid date format: '" + dateString + "'");
+        }
+    }
+
+    /**
      * Convert date value to long style string such as "2015-01-01 12:12:12"
      *
      * @param date date value to convert
      * @return long style date string
      */
-    public static String toLongString(Date date) {
+    public static String toLongString(java.util.Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return dateFormat.format(date);
     }
