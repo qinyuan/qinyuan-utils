@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Properties;
 
 /**
  * Get file in classpath
@@ -20,6 +21,16 @@ public class ClasspathFileUtils {
         File file = getFile(relativePath);
         try {
             return new FileInputStream(file);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Properties getProperties(String relativePath) {
+        Properties props = new Properties();
+        try {
+            props.load(getInputStream(relativePath));
+            return props;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
