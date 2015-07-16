@@ -5,15 +5,18 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class XinaWeiboShareUrlBuilderTest {
     @Test
     public void testBuild() throws Exception {
-        String target = "http://www.sogou.com";
-        String text = "HelloWorld";
+        String targetUrl = "http://www.sogou.com";
+        String title = "HelloWorld";
         List<String> images = Lists.newArrayList(
                 "https://www.baidu.com/img/bdlogo.png",
                 "http://www.sogou.com/images/logo/new/search400x150.png"
         );
-        System.out.println(new XinaWeiboShareUrlBuilder().build(target, text, images));
+        assertThat(new XinaWeiboShareUrlBuilder(targetUrl, title, images).build())
+                .isEqualTo("http://service.weibo.com/share/share.php?title=HelloWorld&url=http%3A%2F%2Fwww.sogou.com&pic=https%3A%2F%2Fwww.baidu.com%2Fimg%2Fbdlogo.png%7C%7Chttp%3A%2F%2Fwww.sogou.com%2Fimages%2Flogo%2Fnew%2Fsearch400x150.png");
     }
 }
