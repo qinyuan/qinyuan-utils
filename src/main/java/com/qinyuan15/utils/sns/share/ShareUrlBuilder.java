@@ -1,7 +1,5 @@
 package com.qinyuan15.utils.sns.share;
 
-import java.lang.String;import java.util.List;
-
 /**
  * Class to build share url
  * Created by qinyuan on 15-7-16.
