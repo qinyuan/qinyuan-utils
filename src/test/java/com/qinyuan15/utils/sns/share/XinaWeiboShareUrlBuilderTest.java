@@ -16,7 +16,7 @@ public class XinaWeiboShareUrlBuilderTest {
                 "https://www.baidu.com/img/bdlogo.png",
                 "http://www.sogou.com/images/logo/new/search400x150.png"
         );
-        assertThat(new XinaWeiboShareUrlBuilder(targetUrl, title, images).build())
-                .isEqualTo("http://service.weibo.com/share/share.php?title=HelloWorld&url=http%3A%2F%2Fwww.sogou.com&pic=https%3A%2F%2Fwww.baidu.com%2Fimg%2Fbdlogo.png%7C%7Chttp%3A%2F%2Fwww.sogou.com%2Fimages%2Flogo%2Fnew%2Fsearch400x150.png");
+        String url = new XinaWeiboShareUrlBuilder(targetUrl, title, images).build();
+        assertThat(url).isEqualTo("http://service.weibo.com/share/share.php?title=HelloWorld&pic=https%3A%2F%2Fwww.baidu.com%2Fimg%2Fbdlogo.png%7C%7Chttp%3A%2F%2Fwww.sogou.com%2Fimages%2Flogo%2Fnew%2Fsearch400x150.png&url=http%3A%2F%2Fwww.sogou.com");
     }
 }
