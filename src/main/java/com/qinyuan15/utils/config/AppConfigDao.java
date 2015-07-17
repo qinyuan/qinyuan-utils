@@ -2,6 +2,7 @@ package com.qinyuan15.utils.config;
 
 import com.qinyuan15.utils.hibernate.HibernateListBuilder;
 import com.qinyuan15.utils.hibernate.HibernateUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 /**
  * Dao of AppConfig
@@ -47,6 +48,23 @@ public class AppConfigDao {
             save(name, "true");
         } else {
             save(name, "false");
+        }
+    }
+
+    public Integer getInteger(String name) {
+        String value = get(name);
+        if (value != null && NumberUtils.isNumber(value)) {
+            return Integer.parseInt(value);
+        } else {
+            return null;
+        }
+    }
+
+    public void saveInteger(String name, Integer value) {
+        if (value == null) {
+            save(name, null);
+        } else {
+            save(name, String.valueOf(value));
         }
     }
 }
