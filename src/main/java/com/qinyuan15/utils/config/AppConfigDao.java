@@ -30,4 +30,23 @@ public class AppConfigDao {
         AppConfig appConfig = getInstanceByName(name);
         return appConfig == null ? null : appConfig.getPropertyValue();
     }
+
+    public Boolean getBoolean(String name) {
+        String booleanString = get(name);
+        if (booleanString == null) {
+            return null;
+        } else {
+            return Boolean.parseBoolean(booleanString);
+        }
+    }
+
+    public void saveBoolean(String name, Boolean value) {
+        if (value == null) {
+            save(name, null);
+        } else if (value) {
+            save(name, "true");
+        } else {
+            save(name, "false");
+        }
+    }
 }
