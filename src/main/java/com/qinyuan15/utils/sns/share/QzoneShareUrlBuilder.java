@@ -6,12 +6,6 @@ import java.util.Map;
 public class QzoneShareUrlBuilder extends AbstractShareUrlBuilder {
     private final Map<String, String> params = new HashMap<>();
 
-    /*public QzoneShareUrlBuilder(String targetUrl, String title, String summary, List<String> pictures) {
-        params.put("title", title);
-        params.put("url", targetUrl);
-        params.put("summary", summary);
-        params.put("pics", Joiner.on("||").join(pictures));
-    }*/
     public QzoneShareUrlBuilder(String targetUrl, String title, String summary, String picture) {
         params.put("title", title);
         params.put("url", targetUrl);
