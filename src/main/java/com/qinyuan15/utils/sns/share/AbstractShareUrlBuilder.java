@@ -14,7 +14,11 @@ public abstract class AbstractShareUrlBuilder implements ShareUrlBuilder {
             } else {
                 url += "?";
             }
-            url += entry.getKey() + "=" + UrlUtils.encode(entry.getValue());
+            if (entry.getValue() != null) {
+                url += entry.getKey() + "=" + UrlUtils.encode(entry.getValue());
+            } else {
+                url += entry.getKey() + "=";
+            }
         }
         return url;
     }
