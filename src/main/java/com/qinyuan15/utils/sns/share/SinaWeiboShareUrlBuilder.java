@@ -10,10 +10,10 @@ import java.util.Map;
  * Class to build share url of sina weibo
  * Created by qinyuan on 15-7-16.
  */
-public class XinaWeiboShareUrlBuilder extends AbstractShareUrlBuilder {
+public class SinaWeiboShareUrlBuilder extends AbstractShareUrlBuilder {
     private final Map<String, String> params = new HashMap<>();
 
-    public XinaWeiboShareUrlBuilder(String targetUrl, String title, List<String> pictures) {
+    public SinaWeiboShareUrlBuilder(String targetUrl, String title, List<String> pictures) {
         params.put("title", title);
         params.put("url", targetUrl);
         params.put("pic", Joiner.on("||").join(pictures));
