@@ -15,7 +15,7 @@ public class MailAddressValidator {
 
     public boolean validate(String mailAddress) {
         try {
-            String check = "^([a-zA-Z0-9_\\-\\.])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+$";
+            String check = "^[a-zA-Z0-9_\\-\\.]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
             Pattern regex = Pattern.compile(check);
             Matcher matcher = regex.matcher(mailAddress);
             return matcher.matches();

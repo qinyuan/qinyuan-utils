@@ -14,6 +14,7 @@ public class MailAddressValidatorTest {
         MailAddressValidator validator = new MailAddressValidator();
         assertThat(validator.validate("2q@qq.com")).isTrue();
         assertThat(validator.validate("qin.yuan@qq.com")).isTrue();
+        assertThat(validator.validate("hello@sina.cn")).isTrue();
         assertThat(validator.validate("2&q@qq.com")).isFalse();
         assertThat(validator.validate("HelloWorld")).isFalse();
         assertThat(validator.validate(null)).isFalse();
