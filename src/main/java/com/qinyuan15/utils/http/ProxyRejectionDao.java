@@ -33,13 +33,13 @@ public class ProxyRejectionDao {
     public static class Factory implements PaginationItemFactory<ProxyRejection> {
         @Override
         public long getCount() {
-            return HibernateUtils.getCount(ProxyRejection.class);
+            return new HibernateListBuilder().count(ProxyRejection.class);
         }
 
         @Override
         public List<ProxyRejection> getInstances(int firstResult, int maxResults) {
-            return HibernateUtils.getList(ProxyRejection.class, "ORDER BY rejectTime DESC, id DESC",
-                    firstResult, maxResults);
+            return new HibernateListBuilder().addOrder("rejectTime", false).addOrder("id", false)
+                    .limit(firstResult, maxResults).build(ProxyRejection.class);
         }
     }
 }

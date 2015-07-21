@@ -25,7 +25,7 @@ public class RankingDao {
     }
 
     public Integer getMaxRanking(Class<? extends Ranking> clazz) {
-        return (Integer) HibernateUtils.getFirstItem("SELECT MAX(ranking) FROM " + clazz.getSimpleName());
+        return (Integer) new HibernateListBuilder().getFirstItem("SELECT MAX(ranking) FROM " + clazz.getSimpleName());
     }
 
     public void switchRanking(Ranking ranking1, Ranking ranking2) {
@@ -61,7 +61,7 @@ public class RankingDao {
             hql += " AND " + whereClause;
         }
         hql += DESC_ORDER;
-        return (T) HibernateUtils.getFirstItem(hql);
+        return (T) new HibernateListBuilder().getFirstItem(hql);
     }
 
     public <T extends Ranking> T getNext(T ranking) {
@@ -79,7 +79,7 @@ public class RankingDao {
             hql += " AND " + whereClause;
         }
         hql += ASC_ORDER;
-        return (T) HibernateUtils.getFirstItem(hql);
+        return (T) new HibernateListBuilder().getFirstItem(hql);
     }
 
 

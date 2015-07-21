@@ -1,5 +1,6 @@
 package com.qinyuan15.utils.http;
 
+import com.qinyuan15.utils.hibernate.HibernateListBuilder;
 import com.qinyuan15.utils.hibernate.HibernateUtils;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -20,33 +21,35 @@ public class ProxyDao {
     }
 
     public List<Proxy> getInstances() {
-        return HibernateUtils.getList(Proxy.class, "ORDER BY speed ASC,speedUpdateTime ASC");
+        return new HibernateListBuilder().addOrder("speed", true).addOrder("speedUpdateTime", true)
+                .build(Proxy.class);
     }
 
     public List<Proxy> getInstances(int size) {
-        return HibernateUtils.getList(Proxy.class, "ORDER BY speed ASC,speedUpdateTime ASC", 0, size);
+        return new HibernateListBuilder().addOrder("speed", true).addOrder("speedUpdateTime", true)
+                .limit(0, size).build(Proxy.class);
     }
 
     public List<Proxy> getSlowInstances(int size) {
-        return HibernateUtils.getList(Proxy.class,
-                "speed=(SELECT MAX(speed) FROM Proxy) ORDER BY speedUpdateTime ASC", 0, size);
+        return new HibernateListBuilder().addFilter("speed=(SELECT MAX(speed) FROM Proxy)")
+                .addOrder("speedUpdateTime", true).limit(0, size).build(Proxy.class);
     }
 
     public List<Proxy> getSlowInstances() {
-        return HibernateUtils.getList(Proxy.class,
-                "speed=(SELECT MAX(speed) FROM Proxy) ORDER BY rand()");
+        return new HibernateListBuilder().addFilter("speed=(SELECT MAX(speed) FROM Proxy)")
+                .addOrder("rand()", true).build(Proxy.class);
     }
 
     public int getCount() {
-        return (int) HibernateUtils.getCount(Proxy.class);
+        return new HibernateListBuilder().count(Proxy.class);
     }
 
     public int getSlowCount() {
-        return (int) HibernateUtils.getCount(Proxy.class, "speed=(SELECT MAX(speed) FROM Proxy)");
+        return new HibernateListBuilder().addFilter("speed=(SELECT MAX(speed) FROM Proxy)").count(Proxy.class);
     }
 
-    public int getFastCount(){
-        return (int) HibernateUtils.getCount(Proxy.class, "speed<>(SELECT MAX(speed) FROM Proxy)");
+    public int getFastCount() {
+        return new HibernateListBuilder().addFilter("speed<>(SELECT MAX(speed) FROM Proxy)").count(Proxy.class);
     }
 
     public void save(List<Proxy> proxies) {
