@@ -1,4 +1,4 @@
-package com.qinyuan15.utils.mvc;
+package com.qinyuan15.utils.mvc.controller;
 
 import java.util.List;
 

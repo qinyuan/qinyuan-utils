@@ -1,4 +1,4 @@
-package com.qinyuan15.utils.mvc;
+package com.qinyuan15.utils.mvc.controller;
 
 import java.lang.Math; /**
  * Tool class about pagination

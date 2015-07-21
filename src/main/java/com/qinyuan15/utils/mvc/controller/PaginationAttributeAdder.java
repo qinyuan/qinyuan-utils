@@ -1,7 +1,8 @@
-package com.qinyuan15.utils.mvc;
+package com.qinyuan15.utils.mvc.controller;
 
 import com.google.common.base.Joiner;
 import com.qinyuan15.utils.IntegerUtils;
+import com.qinyuan15.utils.mvc.UrlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

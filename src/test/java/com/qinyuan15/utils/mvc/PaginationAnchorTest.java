@@ -1,5 +1,6 @@
 package com.qinyuan15.utils.mvc;
 
+import com.qinyuan15.utils.mvc.controller.PaginationAnchor;
 import junit.framework.TestCase;
 
 import java.util.List;
