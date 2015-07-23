@@ -63,17 +63,21 @@ public class HibernateListBuilder {
     }
 
     public int count(String tableName) {
-        Session session = HibernateUtils.getSession();
-        try {
-            String hql = "SELECT COUNT(*) FROM " + tableName + conditionBuilder.build();
-            @SuppressWarnings("unchecked")
-            List<Long> list = this.queryBuilder.buildQuery(session, hql).list();
-            return (int) ((long) list.get(0));
-        } catch (Throwable e) {
-            LOGGER.error("fail to get count: {}", e);
-            throw e;
-        } finally {
-            session.close();   // ensure session is closed
+        String hql = "SELECT COUNT(*) FROM " + tableName;
+        return convertCountResultToInt(getFirstItem(hql));
+    }
+
+    public int countBySQL(String tableName) {
+        String sql = "SELECT COUNT(*) FROM " + tableName;
+        return convertCountResultToInt(getFirstItemBySQL(sql));
+    }
+
+    private int convertCountResultToInt(Object countResult) {
+        if (countResult instanceof Number) {
+            return ((Number) countResult).intValue();
+        } else {
+            countResult = ((Object[]) countResult)[0];
+            return ((Number) countResult).intValue();
         }
     }
 
@@ -138,6 +142,11 @@ public class HibernateListBuilder {
 
     public Object getFirstItem(String hql) {
         List items = build(hql);
+        return items.size() == 0 ? null : items.get(0);
+    }
+
+    public Object getFirstItemBySQL(String sql) {
+        List items = buildBySQL(sql);
         return items.size() == 0 ? null : items.get(0);
     }
 }

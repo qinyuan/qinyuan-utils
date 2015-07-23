@@ -13,6 +13,8 @@ import java.util.List;
  * Created by qinyuan on 15-7-23.
  */
 public class DatabaseTable extends AbstractTable implements PaginationItemFactory<Table.Row> {
+    public final static QueryType DEFAULT_QUERY_TYPE = QueryType.HQL;
+
     private final String tableName;
     private final QueryType queryType;
     private final List<String> fields = new ArrayList<>();
@@ -21,12 +23,12 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
 
     public DatabaseTable(String tableName, String keyField, QueryType queryType) {
         this.tableName = tableName;
-        this.queryType = queryType;
+        this.queryType = queryType == null ? DEFAULT_QUERY_TYPE : queryType;
         this.keyField = keyField;
     }
 
     public DatabaseTable(String tableName, String keyField) {
-        this(tableName, keyField, QueryType.HQL);
+        this(tableName, keyField, DEFAULT_QUERY_TYPE);
     }
 
     public DatabaseTable addField(String head, String field, String alias) {
@@ -78,7 +80,13 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
 
     @Override
     public long getCount() {
-        return listBuilder.count(tableName);
+        if (queryType.equals(QueryType.SQL)) {
+            return listBuilder.countBySQL(tableName);
+        } else if (queryType.equals(QueryType.HQL)) {
+            return listBuilder.count(tableName);
+        } else {
+            throw new RuntimeException("Invalid query type");
+        }
     }
 
     @Override

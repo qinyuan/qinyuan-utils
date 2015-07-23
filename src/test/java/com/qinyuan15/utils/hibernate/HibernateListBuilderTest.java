@@ -2,6 +2,7 @@ package com.qinyuan15.utils.hibernate;
 
 import org.junit.Test;
 
+import java.lang.reflect.Proxy;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,5 +19,13 @@ public class HibernateListBuilderTest {
         for (Object[] objects : list) {
             assertThat(objects).hasSize(6);
         }
+    }
+
+    @Test
+    public void testCountBySQL() {
+        HibernateListBuilder listBuilder = new HibernateListBuilder();
+        assertThat(listBuilder.countBySQL("proxy")).isEqualTo(listBuilder.count(Proxy.class))
+                .isEqualTo(listBuilder.count("Proxy"));
+        System.out.println(listBuilder.count("Proxy"));
     }
 }
