@@ -28,8 +28,14 @@ public class HibernateListBuilder {
     }
 
     public HibernateListBuilder addEqualFilter(String field, Object value) {
-        conditionBuilder.addEqualFilter(field);
-        return this.addArgument(field, value);
+        if (field.contains(".")) {
+            String adjustField = field.replace(",", "__");
+            conditionBuilder.addFilter(field + "=:" + adjustField);
+            return this.addArgument(adjustField, value);
+        } else {
+            conditionBuilder.addEqualFilter(field);
+            return this.addArgument(field, value);
+        }
     }
 
     public HibernateListBuilder addOrder(String field, boolean asc) {

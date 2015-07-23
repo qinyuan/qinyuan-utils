@@ -25,6 +25,10 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
         this.keyField = keyField;
     }
 
+    public DatabaseTable(String tableName, String keyField) {
+        this(tableName, keyField, QueryType.HQL);
+    }
+
     public DatabaseTable addField(String head, String field, String alias) {
         addHeadAlias(head, alias);
         fields.add(field);
@@ -37,6 +41,11 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
 
     public DatabaseTable addOrder(String field, boolean asc) {
         listBuilder.addOrder(field, asc);
+        return this;
+    }
+
+    public DatabaseTable addEqualFilter(String field, Object value) {
+        listBuilder.addEqualFilter(field, value);
         return this;
     }
 
@@ -129,7 +138,7 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
         return Joiner.on(",").join(fieldsWithAlias);
     }
 
-    private static enum QueryType {
+    public static enum QueryType {
         SQL, HQL
     }
 }
