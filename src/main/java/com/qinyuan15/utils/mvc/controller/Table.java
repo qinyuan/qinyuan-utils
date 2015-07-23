@@ -11,7 +11,7 @@ public interface Table {
 
     List<String> getHeads();
 
-    List<Row> getRows();
+    List<Row> getRows(int firstResult, int maxResults);
 
     public static class Row {
         private final Integer id;

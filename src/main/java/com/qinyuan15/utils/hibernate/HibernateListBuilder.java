@@ -53,9 +53,13 @@ public class HibernateListBuilder {
     }
 
     public int count(Class<?> clazz) {
+        return count(clazz.getSimpleName());
+    }
+
+    public int count(String tableName) {
         Session session = HibernateUtils.getSession();
         try {
-            String hql = "SELECT COUNT(*) FROM " + clazz.getSimpleName() + conditionBuilder.build();
+            String hql = "SELECT COUNT(*) FROM " + tableName + conditionBuilder.build();
             @SuppressWarnings("unchecked")
             List<Long> list = this.queryBuilder.buildQuery(session, hql).list();
             return (int) ((long) list.get(0));
