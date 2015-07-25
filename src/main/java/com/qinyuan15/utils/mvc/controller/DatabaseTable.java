@@ -3,6 +3,7 @@ package com.qinyuan15.utils.mvc.controller;
 import com.google.common.base.Joiner;
 import com.qinyuan15.utils.hibernate.HibernateListBuilder;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
     private final List<String> fields = new ArrayList<>();
     private final HibernateListBuilder listBuilder = new HibernateListBuilder();
     private final String keyField;
+    private final List<Pair<String, Boolean>> orderFields = new ArrayList<>();
 
     public DatabaseTable(String tableName, String keyField, QueryType queryType) {
         this.tableName = tableName;
@@ -42,7 +44,8 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
     }
 
     public DatabaseTable addOrder(String field, boolean asc) {
-        listBuilder.addOrder(field, asc);
+        orderFields.add(Pair.of(field, asc));
+        //listBuilder.addOrder(field, asc);
         return this;
     }
 
@@ -99,6 +102,15 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
     public List<Row> getRows(int firstReset, int maxResults) {
         String query = "SELECT " + getFieldString() + " FROM " + tableName;
 
+        for (Pair<String, Boolean> orderField : orderFields) {
+            String fieldOfAlias = getFieldByAlias(orderField.getLeft());
+            if (fieldOfAlias == null) {
+                listBuilder.addOrder(orderField.getLeft(), orderField.getRight());
+            } else {
+                listBuilder.addOrder(fieldOfAlias, orderField.getRight());
+            }
+        }
+
         listBuilder.limit(firstReset, maxResults);
         List<Object[]> list;
         if (queryType.equals(QueryType.SQL)) {
@@ -121,6 +133,20 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
         }
 
         return rows;
+    }
+
+    private String getFieldByAlias(String alias) {
+        if (alias == null) {
+            return null;
+        }
+
+        List<String> aliases = getAliases();
+        for (int i = 0; i < aliases.size(); i++) {
+            if (alias.equals(aliases.get(i)) && fields.size() < i) {
+                return fields.get(i);
+            }
+        }
+        return null;
     }
 
     private String getFieldString() {
