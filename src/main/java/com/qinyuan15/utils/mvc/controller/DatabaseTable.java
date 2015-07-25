@@ -19,9 +19,11 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
     private final String tableName;
     private final QueryType queryType;
     private final List<String> fields = new ArrayList<>();
-    private final HibernateListBuilder listBuilder = new HibernateListBuilder();
     private final String keyField;
+    private final List<String> normalFilters = new ArrayList<>();
     private final List<Pair<String, Boolean>> orderFields = new ArrayList<>();
+    private final List<Pair<String, Object>> equalFilters = new ArrayList<>();
+    private final List<Pair<String, List>> inFilters = new ArrayList<>();
 
     public DatabaseTable(String tableName, String keyField, QueryType queryType) {
         this.tableName = tableName;
@@ -45,48 +47,33 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
 
     public DatabaseTable addOrder(String field, boolean asc) {
         orderFields.add(Pair.of(field, asc));
-        //listBuilder.addOrder(field, asc);
         return this;
     }
 
     public DatabaseTable addEqualFilter(String field, Object value) {
-        listBuilder.addEqualFilter(field, value);
+        equalFilters.add(Pair.of(field, value));
         return this;
     }
 
     public DatabaseTable addFilter(String filter) {
-        listBuilder.addFilter(filter);
+        normalFilters.add(filter);
         return this;
     }
 
-    public DatabaseTable addFilter(String field, List<?> availableValues) {
+    public DatabaseTable addFilter(String field, List availableValues) {
         if (availableValues == null || availableValues.size() == 0) {
             return this;
         }
-
-        String filter = field + " IN (";
-        int i = 0;
-        for (Object availableValue : availableValues) {
-            if (i > 0) {
-                filter += ",";
-            }
-            String paramName = field + "_" + i + "_" + RandomStringUtils.randomAlphanumeric(5);
-
-            filter += ":" + paramName;
-            listBuilder.addArgument(paramName, availableValue);
-            i++;
-        }
-        filter += ")";
-        listBuilder.addFilter(filter);
+        inFilters.add(Pair.of(field, availableValues));
         return this;
     }
 
     @Override
     public long getCount() {
         if (queryType.equals(QueryType.SQL)) {
-            return listBuilder.countBySQL(tableName);
+            return getFilteredListBuilder().countBySQL(tableName);
         } else if (queryType.equals(QueryType.HQL)) {
-            return listBuilder.count(tableName);
+            return getFilteredListBuilder().count(tableName);
         } else {
             throw new RuntimeException("Invalid query type");
         }
@@ -100,27 +87,14 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
     @Override
     @SuppressWarnings("unchecked")
     public List<Row> getRows(int firstReset, int maxResults) {
+        // TODO if there is only one field, exeception will be raised up
         String query = "SELECT " + getFieldString() + " FROM " + tableName;
 
-        for (Pair<String, Boolean> orderField : orderFields) {
-            String fieldOfAlias = getFieldByAlias(orderField.getLeft());
-            if (fieldOfAlias == null) {
-                listBuilder.addOrder(orderField.getLeft(), orderField.getRight());
-            } else {
-                listBuilder.addOrder(fieldOfAlias, orderField.getRight());
-            }
-        }
+        HibernateListBuilder listBuilder = getFilteredListBuilder();
+        addOrderFieldsToListBuilder(listBuilder);
 
         listBuilder.limit(firstReset, maxResults);
-        List<Object[]> list;
-        if (queryType.equals(QueryType.SQL)) {
-            list = listBuilder.buildBySQL(query);
-        } else if (queryType.equals(QueryType.HQL)) {
-            list = listBuilder.build(query);
-        } else {
-            return new ArrayList<>();
-        }
-
+        List<Object[]> list = getList(listBuilder, query);
         List<Row> rows = new ArrayList<>();
         for (Object[] objects : list) {
             if (StringUtils.hasText(keyField)) {
@@ -135,6 +109,76 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
         return rows;
     }
 
+    public List getDistinctValues(String field) {
+        if (!StringUtils.hasText(field)) {
+            return new ArrayList<>();
+        }
+
+        String readField = getFieldByAlias(field);
+        String query = "SELECT DISTINCT ";
+        if (readField.equals(field)) {
+            query += field;
+        } else {
+            query += readField + " AS " + field;
+        }
+        query += " FROM " + tableName;
+
+        HibernateListBuilder listBuilder = getFilteredListBuilder();
+        return getList(listBuilder, query);
+    }
+
+    private List getList(HibernateListBuilder listBuilder, String query) {
+        if (queryType.equals(QueryType.SQL)) {
+            return listBuilder.buildBySQL(query);
+        } else if (queryType.equals(QueryType.HQL)) {
+            return listBuilder.build(query);
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    private HibernateListBuilder getFilteredListBuilder() {
+        HibernateListBuilder listBuilder = new HibernateListBuilder();
+
+        // add normal filters
+        for (String filter : normalFilters) {
+            listBuilder.addFilter(filter);
+        }
+
+        // add equal filters
+        for (Pair<String, Object> filter : equalFilters) {
+            listBuilder.addEqualFilter(getFieldByAlias(filter.getLeft()), filter.getRight());
+        }
+
+        // add in filters
+        for (Pair<String, List> inFilter : inFilters) {
+            String field = getFieldByAlias(inFilter.getLeft());
+            String filter = field + " IN (";
+            int i = 0;
+            for (Object availableValue : inFilter.getRight()) {
+                if (i > 0) {
+                    filter += ",";
+                }
+                String paramName = field + "_" + i + "_" + RandomStringUtils.randomAlphanumeric(5);
+
+                filter += ":" + paramName;
+                listBuilder.addArgument(paramName, availableValue);
+                i++;
+            }
+            filter += ")";
+            listBuilder.addFilter(filter);
+        }
+
+        return listBuilder;
+    }
+
+    private void addOrderFieldsToListBuilder(HibernateListBuilder listBuilder) {
+        for (Pair<String, Boolean> orderField : orderFields) {
+            addOrderStyle(orderField.getLeft(), orderField.getRight());
+            listBuilder.addOrder(getFieldByAlias(orderField.getLeft()), orderField.getRight());
+        }
+    }
+
     private String getFieldByAlias(String alias) {
         if (alias == null) {
             return null;
@@ -142,11 +186,11 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
 
         List<String> aliases = getAliases();
         for (int i = 0; i < aliases.size(); i++) {
-            if (alias.equals(aliases.get(i)) && fields.size() < i) {
+            if (alias.equals(aliases.get(i)) && i < fields.size()) {
                 return fields.get(i);
             }
         }
-        return null;
+        return alias;
     }
 
     private String getFieldString() {

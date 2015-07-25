@@ -11,6 +11,8 @@ public interface Table {
 
     List<String> getHeads();
 
+    List<String> getHeadStyles();
+
     List<Row> getRows(int firstResult, int maxResults);
 
     public static class Row {
