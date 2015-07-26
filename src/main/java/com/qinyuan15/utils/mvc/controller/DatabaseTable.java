@@ -61,7 +61,7 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
     }
 
     public DatabaseTable addFilter(String field, List availableValues) {
-        if (availableValues == null || availableValues.size() == 0) {
+        if (availableValues == null) {
             return this;
         }
         inFilters.add(Pair.of(field, availableValues));
@@ -87,7 +87,7 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
     @Override
     @SuppressWarnings("unchecked")
     public List<Row> getRows(int firstReset, int maxResults) {
-        // TODO if there is only one field, exeception will be raised up
+        // TODO if there is only one field, exception will be raised up
         String query = "SELECT " + getFieldString() + " FROM " + tableName;
 
         HibernateListBuilder listBuilder = getFilteredListBuilder();
@@ -139,7 +139,11 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
 
     private HibernateListBuilder getFilteredListBuilder() {
         HibernateListBuilder listBuilder = new HibernateListBuilder();
+        addFiltersToListBuilder(listBuilder);
+        return listBuilder;
+    }
 
+    private void addFiltersToListBuilder(HibernateListBuilder listBuilder) {
         // add normal filters
         for (String filter : normalFilters) {
             listBuilder.addFilter(filter);
@@ -152,24 +156,43 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
 
         // add in filters
         for (Pair<String, List> inFilter : inFilters) {
-            String field = getFieldByAlias(inFilter.getLeft());
-            String filter = field + " IN (";
+            String alias = inFilter.getLeft();
+            addFilterStyle(alias);
+
+            List availableValues = inFilter.getRight();
+            if (availableValues.size() == 0) {
+                listBuilder.addFilter("false");
+                break;
+            }
+
+            String field = getFieldByAlias(alias);
+            String filter = "";
             int i = 0;
-            for (Object availableValue : inFilter.getRight()) {
-                if (i > 0) {
-                    filter += ",";
+            boolean hasNull = false;
+            for (Object availableValue : availableValues) {
+                if (availableValue == null) {
+                    hasNull = true;
+                    continue;
                 }
+
+                filter += (i == 0 ? (field + " IN (") : ",");
                 String paramName = field + "_" + i + "_" + RandomStringUtils.randomAlphanumeric(5);
 
                 filter += ":" + paramName;
                 listBuilder.addArgument(paramName, availableValue);
                 i++;
             }
-            filter += ")";
+            if (!filter.isEmpty()) {
+                filter += ")";
+            }
+            if (hasNull) {
+                if (!filter.isEmpty()) {
+                    filter += " OR ";
+                }
+                filter += field + " IS null";
+            }
             listBuilder.addFilter(filter);
         }
-
-        return listBuilder;
     }
 
     private void addOrderFieldsToListBuilder(HibernateListBuilder listBuilder) {

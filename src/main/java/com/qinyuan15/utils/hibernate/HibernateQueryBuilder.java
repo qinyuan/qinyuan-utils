@@ -49,7 +49,10 @@ class HibernateQueryBuilder {
         for (Map.Entry<String, Object> entry : arguments.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
-            if (value instanceof Integer) {
+
+            if (value == null) {
+                query.setString(key, null);
+            } else if (value instanceof Integer) {
                 query.setInteger(key, (Integer) value);
             } else if (value instanceof Double) {
                 query.setDouble(key, (Double) value);

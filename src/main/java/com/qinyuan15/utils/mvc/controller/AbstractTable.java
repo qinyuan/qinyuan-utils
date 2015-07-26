@@ -18,11 +18,19 @@ public abstract class AbstractTable implements Table {
         this.headStyles.add("filter");
     }
 
-    protected void addOrderStyle(String alias, boolean asc) {
+    private void addHeadStyle(String alias, String style) {
         int fieldIndex = getAliases().indexOf(alias);
         if (fieldIndex >= 0 && fieldIndex < headStyles.size()) {
-            headStyles.set(fieldIndex, headStyles.get(fieldIndex) + (asc ? " asc" : " desc"));
+            headStyles.set(fieldIndex, headStyles.get(fieldIndex) + " " + style);
         }
+    }
+
+    protected void addOrderStyle(String alias, boolean asc) {
+        addHeadStyle(alias, asc ? "asc" : "desc");
+    }
+
+    protected void addFilterStyle(String alias) {
+        addHeadStyle(alias, "filtered");
     }
 
     @Override
