@@ -23,16 +23,17 @@ public class IpLocationDao {
         return ipLocation == null ? null : ipLocation.getIp();
     }
 
-    public void save(String ip, String location) {
+    public Integer save(String ip, String location) {
         IpLocation ipLocation = getInstanceByIp(ip);
         if (ipLocation == null) {
             ipLocation = new IpLocation();
             ipLocation.setIp(ip);
             ipLocation.setLocation(location);
-            HibernateUtils.save(ipLocation);
+            return HibernateUtils.save(ipLocation);
         } else {
             ipLocation.setLocation(location);
             HibernateUtils.update(ipLocation);
+            return ipLocation.getId();
         }
     }
 }
