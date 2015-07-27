@@ -1,5 +1,6 @@
 package com.qinyuan15.utils.http;
 
+import com.qinyuan15.utils.ip.IpUtils;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
