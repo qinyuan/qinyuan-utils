@@ -20,7 +20,7 @@ public class IpLocationDao {
 
     public String getLocationByIp(String ip) {
         IpLocation ipLocation = getInstanceByIp(ip);
-        return ipLocation == null ? null : ipLocation.getIp();
+        return ipLocation == null ? null : ipLocation.getLocation();
     }
 
     public Integer save(String ip, String location) {
