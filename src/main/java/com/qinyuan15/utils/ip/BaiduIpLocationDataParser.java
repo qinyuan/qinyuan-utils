@@ -5,14 +5,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.Map;
 
-/**
- * Parse ip content from taobao
- * Created by qinyuan on 15-7-27.
- */
-class TaobaoIpLocationDataParser implements IpLocationDataParser {
-    private final static Logger LOGGER = LoggerFactory.getLogger(TaobaoIpLocationDataParser.class);
+public class BaiduIpLocationDataParser implements IpLocationDataParser {
+    private final static Logger LOGGER = LoggerFactory.getLogger(BaiduIpLocationDataParser.class);
 
     @Override
     public String parse(String locationData) {
@@ -29,12 +26,17 @@ class TaobaoIpLocationDataParser implements IpLocationDataParser {
             }
 
             Object data = ((Map) object).get("data");
-            if (!(data instanceof Map)) {
+            if (!(data instanceof List)) {
                 return null;
             }
 
-            Map dataMap = (Map) data;
-            return dataMap.get("country") + " " + dataMap.get("area") + " " + dataMap.get("region") + " " + dataMap.get("city");
+            Object dataFirstItem = ((List) data).get(0);
+            if (!(dataFirstItem instanceof Map)) {
+                return null;
+            }
+
+            Map dataFirstItemMap = (Map) dataFirstItem;
+            return dataFirstItemMap.get("location").toString();
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error("Fail to page location, data: {}, info: {}", locationData, e);
