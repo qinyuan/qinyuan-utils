@@ -32,6 +32,10 @@ public abstract class NetworkIpLocationQuerier implements IpLocationQuerier {
         }
 
         String location = getDataParser().parse(content);
+        if (location != null) {
+            location = location.trim();
+        }
+
         if (this.ipLocationSaver != null) {
             this.ipLocationSaver.save(ip, location);
         }

@@ -21,7 +21,7 @@ public class LoginRecordDao {
         return HibernateUtils.save(loginRecord);
     }
 
-    private Integer add(Integer userId, String ip) {
+    public Integer add(Integer userId, String ip) {
         return add(userId, ip, new DefaultIpLocationQuerier().getLocation(ip), DateUtils.nowString());
     }
 }

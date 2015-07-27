@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.qinyuan15.utils.security">
+    <class name="LoginRecord" table="login_record">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="userId" column="user_id"/>
+        <property name="loginTime" column="login_time"/>
+        <property name="ip"/>
+        <property name="location"/>
+    </class>
+</hibernate-mapping>

@@ -9,6 +9,9 @@ public class TaobaoIpLocationQuerierTest {
     public void test() {
         TaobaoIpLocationQuerier querier = new TaobaoIpLocationQuerier();
         String location = querier.getLocation("113.87.101.227");
-        assertThat(location).isEqualTo("中国-华南-广东省-深圳市");
+        assertThat(location).isEqualTo("中国 华南 广东省 深圳市");
+
+        location = querier.getLocation("127.0.0.1");
+        assertThat(location).isEqualTo("未分配或者内网IP");
     }
 }
