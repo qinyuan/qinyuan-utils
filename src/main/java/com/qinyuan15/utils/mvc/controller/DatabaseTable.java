@@ -84,6 +84,10 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
         return getRows(firstResult, maxResults);
     }
 
+    public List<Row> getRows() {
+        return getRows(-1, -1);
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     public List<Row> getRows(int firstReset, int maxResults) {
