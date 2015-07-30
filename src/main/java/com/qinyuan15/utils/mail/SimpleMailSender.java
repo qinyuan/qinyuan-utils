@@ -15,7 +15,7 @@ import java.util.Properties;
  * Class to send mail
  * Created by qinyuan on 15-7-1.
  */
-public class SimpleMailSender {
+public class SimpleMailSender implements MailSender {
 
     private MailAuthenticator authenticator;
     private Session session;
