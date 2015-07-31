@@ -4,7 +4,7 @@ import com.qinyuan15.utils.DateUtils;
 import com.qinyuan15.utils.IntegerUtils;
 import com.qinyuan15.utils.hibernate.HibernateListBuilder;
 import com.qinyuan15.utils.hibernate.HibernateUtils;
-import org.apache.commons.lang3.RandomStringUtils;import java.lang.Integer;import java.lang.String;
+import org.apache.commons.lang3.RandomStringUtils;
 
 public abstract class MailSerialKeyDao {
     private final static int SERIAL_KEY_LENGTH = 100;
@@ -12,11 +12,15 @@ public abstract class MailSerialKeyDao {
     abstract protected String getMailType();
 
     public Integer add(Integer userId) {
+        return add(userId, "");
+    }
+
+    public Integer add(Integer userId, String serialKeyPrefix) {
         MailSerialKey mailSerialKey = new MailSerialKey();
         mailSerialKey.setUserId(userId);
 
         do {
-            mailSerialKey.setSerialKey(RandomStringUtils.randomAlphanumeric(SERIAL_KEY_LENGTH));
+            mailSerialKey.setSerialKey(serialKeyPrefix + RandomStringUtils.randomAlphanumeric(SERIAL_KEY_LENGTH));
         } while (getInstanceBySerialKey(mailSerialKey.getSerialKey()) != null);
 
         mailSerialKey.setSendTime(DateUtils.nowString());
