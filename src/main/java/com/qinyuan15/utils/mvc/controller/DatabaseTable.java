@@ -130,6 +130,7 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
         return rows;
     }
 
+    // TODO 当存在columnPostHandlers时，getDistinctValues和getRows中的结果会出现一致性问题
     public List getDistinctValues(String field) {
         if (!StringUtils.hasText(field)) {
             return new ArrayList<>();
