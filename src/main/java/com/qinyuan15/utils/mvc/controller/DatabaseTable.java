@@ -24,6 +24,7 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
     private final List<Pair<String, Boolean>> orderFields = new ArrayList<>();
     private final List<Pair<String, Object>> equalFilters = new ArrayList<>();
     private final List<Pair<String, List>> inFilters = new ArrayList<>();
+    private final List<DatabaseTableColumnPostHandler> columnPostHandlers = new ArrayList<>();
 
     public DatabaseTable(String tableName, String keyField, QueryType queryType) {
         this.tableName = tableName;
@@ -35,10 +36,15 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
         this(tableName, keyField, DEFAULT_QUERY_TYPE);
     }
 
-    public DatabaseTable addField(String head, String field, String alias) {
+    public DatabaseTable addField(String head, String field, String alias, DatabaseTableColumnPostHandler postHandler) {
         addHeadAlias(head, alias);
         fields.add(field);
+        columnPostHandlers.add(postHandler);
         return this;
+    }
+
+    public DatabaseTable addField(String head, String field, String alias) {
+        return addField(head, field, alias, null);
     }
 
     public DatabaseTable addField(String head, String field) {
@@ -84,6 +90,7 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
         return getRows(firstResult, maxResults);
     }
 
+    @Override
     public List<Row> getRows() {
         return getRows(-1, -1);
     }
@@ -107,6 +114,16 @@ public class DatabaseTable extends AbstractTable implements PaginationItemFactor
                 rows.add(new Row((Integer) objects[0], cols));
             } else {
                 rows.add(new Row(null, objects));
+            }
+        }
+
+        for (int i = 0; i < columnPostHandlers.size(); i++) {
+            DatabaseTableColumnPostHandler handler = columnPostHandlers.get(i);
+            int columnIndexToHandle = StringUtils.hasText(keyField) ? i : i - 1;
+            if (handler != null && columnIndexToHandle >= 0) {
+                for (Row row : rows) {
+                    row.getCols()[columnIndexToHandle] = handler.handle(row.getCols()[columnIndexToHandle]);
+                }
             }
         }
 

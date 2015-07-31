@@ -15,6 +15,8 @@ public interface Table {
 
     List<Row> getRows(int firstResult, int maxResults);
 
+    List<Row> getRows();
+
     public static class Row {
         private final Integer id;
         private final Object[] cols;

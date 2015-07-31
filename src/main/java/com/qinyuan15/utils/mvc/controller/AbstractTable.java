@@ -13,6 +13,10 @@ public abstract class AbstractTable implements Table {
     private final List<String> headStyles = new ArrayList<>();
 
     protected void addHeadAlias(String head, String alias) {
+        if (aliases.contains(alias)) {
+            throw new RuntimeException("There is more than one alias named '" + alias + "'");
+        }
+
         this.heads.add(head);
         this.aliases.add(alias);
         this.headStyles.add("filter");
