@@ -139,7 +139,7 @@ public class DateUtils {
     }
 
     /**
-     * Adjust date String queried from database directly
+     * Delete the  milli second part of date
      * <p>
      * In MySQL, the date string queried from database looks like
      * "2015-01-01 15:15:15.5", we need to convert it to format such as
@@ -149,7 +149,7 @@ public class DateUtils {
      * @param dateString date string queried from MySQL
      * @return adjusted date string
      */
-    public static String adjustDateStringFromDB(String dateString) {
+    public static String trimMilliSecond(String dateString) {
         return dateString == null ? null : dateString.replaceAll("\\.\\d*$", "");
     }
 

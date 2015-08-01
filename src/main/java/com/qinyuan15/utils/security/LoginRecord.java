@@ -1,5 +1,6 @@
 package com.qinyuan15.utils.security;
 
+import com.qinyuan15.utils.DateUtils;
 import com.qinyuan15.utils.hibernate.PersistObject;
 
 public class LoginRecord extends PersistObject {
@@ -13,7 +14,7 @@ public class LoginRecord extends PersistObject {
     }
 
     public String getLoginTime() {
-        return loginTime;
+        return DateUtils.trimMilliSecond(loginTime);
     }
 
     public String getIp() {

@@ -110,7 +110,7 @@ public class DateUtilsTest {
 
     @Test
     public void testAdjustDateStringFromDB() {
-        assertThat(DateUtils.adjustDateStringFromDB("2015-12-12 12:12:12.12"))
+        assertThat(DateUtils.trimMilliSecond("2015-12-12 12:12:12.12"))
                 .isEqualTo("2015-12-12 12:12:12");
     }
 

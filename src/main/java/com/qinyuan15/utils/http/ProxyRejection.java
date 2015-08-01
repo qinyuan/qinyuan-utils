@@ -27,7 +27,7 @@ public class ProxyRejection extends PersistObject {
     }
 
     public String getRejectTime() {
-        return DateUtils.adjustDateStringFromDB(rejectTime);
+        return DateUtils.trimMilliSecond(rejectTime);
     }
 
     public void setProxyId(int proxyId) {
