@@ -26,4 +26,13 @@ public class StringUtilsTest {
         test = "192.168.8.1world192.168.8.1";
         assertThat(StringUtils.replaceFirst(test, from, to)).isEqualTo("172.16.114.114world192.168.8.1");
     }
+
+    @Test
+    public void testGetChineseStringLength() {
+        assertThat(StringUtils.getChineseStringLength("中国")).isEqualTo(4);
+        assertThat(StringUtils.getChineseStringLength("Hello")).isEqualTo(5);
+        assertThat(StringUtils.getChineseStringLength("HELLO")).isEqualTo(5);
+        assertThat(StringUtils.getChineseStringLength("hello, 中国")).isEqualTo(11);
+        assertThat(StringUtils.getChineseStringLength(null)).isEqualTo(0);
+    }
 }
