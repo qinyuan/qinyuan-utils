@@ -81,6 +81,13 @@ public class DateUtilsTest {
     }
 
     @Test
+    public void testGetSecondDiff() throws Exception {
+        Date date1 = DateUtils.newDate("2012-02-28 12:12:00");
+        Date date2 = DateUtils.newDate("2012-02-28 12:15:00");
+        assertThat(DateUtils.getSecondDiff(date1, date2)).isEqualTo(180);
+    }
+
+    @Test
     public void testIsDate() throws Exception {
         assertThat(DateUtils.isDate("1022-12-12")).isTrue();
         assertThat(DateUtils.isDate("2012-1-1")).isTrue();
