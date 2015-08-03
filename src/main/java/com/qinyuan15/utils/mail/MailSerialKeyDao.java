@@ -5,11 +5,16 @@ import com.qinyuan15.utils.IntegerUtils;
 import com.qinyuan15.utils.hibernate.HibernateListBuilder;
 import com.qinyuan15.utils.hibernate.HibernateUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.util.StringUtils;
+
+import java.sql.Date;
 
 public abstract class MailSerialKeyDao {
     private final static int SERIAL_KEY_LENGTH = 100;
 
     abstract protected String getMailType();
+
+    abstract protected int getExpireSeconds();
 
     public Integer add(Integer userId) {
         return add(userId, "");
@@ -30,19 +35,19 @@ public abstract class MailSerialKeyDao {
 
     public MailSerialKey getInstance(Integer id) {
         MailSerialKey mailSerialKey = HibernateUtils.get(MailSerialKey.class, id);
-        return filterByMailType(mailSerialKey);
+        return filterByMailTypeAndExpireSeconds(mailSerialKey);
     }
 
     public MailSerialKey getInstanceByUserId(Integer userId) {
         MailSerialKey mailSerialKey = new HibernateListBuilder().addFilter("userId=:userId").addOrder("id", true)
                 .addArgument("userId", userId).getFirstItem(MailSerialKey.class);
-        return filterByMailType(mailSerialKey);
+        return filterByMailTypeAndExpireSeconds(mailSerialKey);
     }
 
     public MailSerialKey getInstanceBySerialKey(String serialKey) {
         MailSerialKey mailSerialKey = new HibernateListBuilder().addEqualFilter("serialKey", serialKey)
                 .getFirstItem(MailSerialKey.class);
-        return filterByMailType(mailSerialKey);
+        return filterByMailTypeAndExpireSeconds(mailSerialKey);
     }
 
     public boolean hasSerialKey(String serialKey) {
@@ -59,10 +64,27 @@ public abstract class MailSerialKeyDao {
         HibernateUtils.executeUpdate(hql);
     }
 
-    private MailSerialKey filterByMailType(MailSerialKey mailSerialKey) {
-        if (mailSerialKey == null || getMailType() == null || mailSerialKey.getMailType() == null) {
+    private MailSerialKey filterByMailTypeAndExpireSeconds(MailSerialKey mailSerialKey) {
+        // validate null
+        if (mailSerialKey == null) {
             return null;
         }
-        return getMailType().equals(mailSerialKey.getMailType()) ? mailSerialKey : null;
+
+        // validate mailType
+        if (getMailType() == null || mailSerialKey.getMailType() == null
+                || (!getMailType().equals(mailSerialKey.getMailType()))) {
+            return null;
+        }
+
+        // validate send time
+        if (!StringUtils.hasText(mailSerialKey.getSendTime())) {
+            return null;
+        }
+        Date sendTime = DateUtils.newDate(DateUtils.trimMilliSecond(mailSerialKey.getSendTime()));
+        if (DateUtils.getSecondDiff(sendTime, DateUtils.now()) > getExpireSeconds()) {
+            return null;
+        }
+
+        return mailSerialKey;
     }
 }
