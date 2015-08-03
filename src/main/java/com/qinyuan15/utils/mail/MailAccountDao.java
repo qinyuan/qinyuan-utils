@@ -19,11 +19,20 @@ public class MailAccountDao {
         return HibernateUtils.save(account);
     }
 
-    public void update(Integer id, String host, String username, String password) {
+    /*public void update(Integer id, String host, String username, String password) {
         MailAccount account = getInstance(id);
         if (account != null) {
             account.setHost(host);
             account.setUsername(username);
+            account.setPassword(password);
+            HibernateUtils.update(account);
+        }
+    }*/
+
+    public void update(Integer id, String host, String password) {
+        MailAccount account = getInstance(id);
+        if (account != null) {
+            account.setHost(host);
             account.setPassword(password);
             HibernateUtils.update(account);
         }
