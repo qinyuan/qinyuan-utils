@@ -9,12 +9,24 @@ import org.springframework.util.StringUtils;
 
 import java.sql.Date;
 
-public abstract class MailSerialKeyDao {
+public class MailSerialKeyDao {
     private final static int SERIAL_KEY_LENGTH = 100;
 
-    abstract protected String getMailType();
+    private final String mailType;
+    private final int expireSeconds;
 
-    abstract protected int getExpireSeconds();
+    public MailSerialKeyDao(String mailType, int expireSeconds) {
+        if (!StringUtils.hasText(mailType)) {
+            throw new IllegalArgumentException("mailType can't be empty, real mailType: " + mailType);
+        }
+
+        if (expireSeconds <= 0) {
+            throw new IllegalArgumentException("expireSeconds must be positive, real expireSeconds: " + expireSeconds);
+        }
+
+        this.mailType = mailType;
+        this.expireSeconds = expireSeconds;
+    }
 
     public Integer add(Integer userId) {
         return add(userId, "");
@@ -29,30 +41,44 @@ public abstract class MailSerialKeyDao {
         } while (getInstanceBySerialKey(mailSerialKey.getSerialKey()) != null);
 
         mailSerialKey.setSendTime(DateUtils.nowString());
-        mailSerialKey.setMailType(getMailType());
+        mailSerialKey.setMailType(mailType);
         return HibernateUtils.save(mailSerialKey);
     }
 
     public MailSerialKey getInstance(Integer id) {
-        MailSerialKey mailSerialKey = HibernateUtils.get(MailSerialKey.class, id);
-        return filterByMailTypeAndExpireSeconds(mailSerialKey);
+        final MailSerialKey mailSerialKey = HibernateUtils.get(MailSerialKey.class, id);
+
+        if (mailSerialKey == null) {
+            return null;
+        }
+
+        // validate mailType
+        if (mailSerialKey.getMailType() == null || (!mailType.equals(mailSerialKey.getMailType()))) {
+            return null;
+        }
+
+        // validate send time
+        if (!StringUtils.hasText(mailSerialKey.getSendTime())) {
+            return null;
+        }
+        Date sendTime = DateUtils.newDate(DateUtils.trimMilliSecond(mailSerialKey.getSendTime()));
+        if (DateUtils.getSecondDiff(sendTime, DateUtils.now()) > expireSeconds) {
+            return null;
+        }
+
+        return mailSerialKey;
     }
 
     public MailSerialKey getInstanceByUserId(Integer userId) {
-        MailSerialKey mailSerialKey = new HibernateListBuilder().addFilter("userId=:userId").addOrder("id", true)
-                .addArgument("userId", userId).getFirstItem(MailSerialKey.class);
-        return filterByMailTypeAndExpireSeconds(mailSerialKey);
+        return getListBuilder().addEqualFilter("userId", userId).getFirstItem(MailSerialKey.class);
     }
 
     public MailSerialKey getInstanceBySerialKey(String serialKey) {
-        MailSerialKey mailSerialKey = new HibernateListBuilder().addEqualFilter("serialKey", serialKey)
-                .getFirstItem(MailSerialKey.class);
-        return filterByMailTypeAndExpireSeconds(mailSerialKey);
+        return getListBuilder().addEqualFilter("serialKey", serialKey).getFirstItem(MailSerialKey.class);
     }
 
     public boolean hasSerialKey(String serialKey) {
-        return new HibernateListBuilder().addEqualFilter("serialKey", serialKey)
-                .addEqualFilter("mailType", getMailType()).count(MailSerialKey.class) > 0;
+        return getListBuilder().addEqualFilter("serialKey", serialKey).count(MailSerialKey.class) > 0;
     }
 
     public void response(Integer id) {
@@ -64,27 +90,9 @@ public abstract class MailSerialKeyDao {
         HibernateUtils.executeUpdate(hql);
     }
 
-    private MailSerialKey filterByMailTypeAndExpireSeconds(MailSerialKey mailSerialKey) {
-        // validate null
-        if (mailSerialKey == null) {
-            return null;
-        }
-
-        // validate mailType
-        if (getMailType() == null || mailSerialKey.getMailType() == null
-                || (!getMailType().equals(mailSerialKey.getMailType()))) {
-            return null;
-        }
-
-        // validate send time
-        if (!StringUtils.hasText(mailSerialKey.getSendTime())) {
-            return null;
-        }
-        Date sendTime = DateUtils.newDate(DateUtils.trimMilliSecond(mailSerialKey.getSendTime()));
-        if (DateUtils.getSecondDiff(sendTime, DateUtils.now()) > getExpireSeconds()) {
-            return null;
-        }
-
-        return mailSerialKey;
+    private HibernateListBuilder getListBuilder() {
+        Date earliestValidTime = new Date(System.currentTimeMillis() - expireSeconds * 1000);
+        return new HibernateListBuilder().addEqualFilter("mailType", mailType).addFilter("sendTime>=:sendTime")
+                .addArgument("sendTime", DateUtils.toLongString(earliestValidTime));
     }
 }
