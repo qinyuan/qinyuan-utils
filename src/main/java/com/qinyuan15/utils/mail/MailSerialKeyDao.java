@@ -93,6 +93,7 @@ public class MailSerialKeyDao {
     private HibernateListBuilder getListBuilder() {
         Date earliestValidTime = new Date(System.currentTimeMillis() - expireSeconds * 1000);
         return new HibernateListBuilder().addEqualFilter("mailType", mailType).addFilter("sendTime>=:sendTime")
-                .addArgument("sendTime", DateUtils.toLongString(earliestValidTime));
+                .addArgument("sendTime", DateUtils.toLongString(earliestValidTime))
+                .addOrder("id", false);
     }
 }
