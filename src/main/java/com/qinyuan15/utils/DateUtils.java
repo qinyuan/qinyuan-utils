@@ -1,5 +1,6 @@
 package com.qinyuan15.utils;
 
+import com.mysql.jdbc.exceptions.MySQLInvalidAuthorizationSpecException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -103,13 +104,19 @@ public class DateUtils {
         return now().toString() + " 23:59:59";
     }
 
+    private final static String DATE_PATTERN = "\\d{4}-\\d{1,2}-\\d{1,2}";
     public static boolean isDate(String date) {
-        return date != null && date.matches("^\\d{4}-\\d{1,2}-\\d{1,2}$");
+        return date != null && date.matches("^" + DATE_PATTERN + "$");
     }
 
+    private final static String DATE_TIME_PATTERN = DATE_PATTERN + " \\d{1,2}:\\d{1,2}:\\d{1,2}";
     public static boolean isDateTime(String dateTime) {
-        return dateTime != null &&
-                dateTime.matches("^\\d{4}-\\d{1,2}-\\d{1,2} \\d{1,2}:\\d{1,2}:\\d{1,2}$");
+        return dateTime != null && dateTime.matches("^" + DATE_TIME_PATTERN + "$");
+    }
+
+    private final static String MYSQL_DATE_TIME_PATTERN = DATE_TIME_PATTERN + "\\.\\d+";
+    public static boolean isDateTimeFromMySQL(String dateTime) {
+        return dateTime !=null && dateTime.matches("^" + MYSQL_DATE_TIME_PATTERN + "$");
     }
 
     public static boolean isDateOrDateTime(String value) {

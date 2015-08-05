@@ -127,6 +127,15 @@ public class DatabaseTable extends AbstractTable {
             }
         }
 
+        // adjust datetime
+        for(Row row:rows) {
+            for(Object col :row.getCols()) {
+                //if (col instanceof String && ) {
+
+                //}
+            }
+        }
+
         return rows;
     }
 

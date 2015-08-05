@@ -101,6 +101,13 @@ public class DateUtilsTest {
     }
 
     @Test
+    public void testIsDateTimeFromMySQL() {
+        assertThat(DateUtils.isDateTimeFromMySQL("2012-12-12 12:12:12.0")).isTrue();
+        assertThat(DateUtils.isDateTimeFromMySQL("2012-12-12 12:12:12.00")).isTrue();
+        assertThat(DateUtils.isDateTimeFromMySQL("2012-12-12 12:12:12")).isFalse();
+    }
+
+    @Test
     public void testIsDateOrDateTime() {
         assertThat(DateUtils.isDateOrDateTime("2012-1-1")).isTrue();
         assertThat(DateUtils.isDateOrDateTime("2012-01-01")).isTrue();
