@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.qinyuan15.utils.mvc.UrlUtils;
 import com.qinyuan15.utils.security.SecuritySearcher;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
@@ -49,6 +50,11 @@ public class BaseController {
 
     protected String getParameter(String name) {
         return request.getParameter(name);
+    }
+
+    protected Integer getIntParameter(String name) {
+        String value = getParameter(name);
+        return NumberUtils.isNumber(value) ? Integer.parseInt(value) : null;
     }
 
     protected void setTitle(Object title) {
