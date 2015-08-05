@@ -1,6 +1,7 @@
 package com.qinyuan15.utils.mvc.controller;
 
 import com.google.common.base.Joiner;
+import com.qinyuan15.utils.DateUtils;
 import com.qinyuan15.utils.hibernate.HibernateListBuilder;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -128,11 +129,12 @@ public class DatabaseTable extends AbstractTable {
         }
 
         // adjust datetime
-        for(Row row:rows) {
-            for(Object col :row.getCols()) {
-                //if (col instanceof String && ) {
-
-                //}
+        for (Row row : rows) {
+            for (int i = 0; i < row.getCols().length; i++) {
+                Object col = row.getCols()[i];
+                if (col instanceof String && DateUtils.isDateTimeFromMySQL((String) col)) {
+                    row.getCols()[i] = DateUtils.trimMilliSecond((String) col);
+                }
             }
         }
 
