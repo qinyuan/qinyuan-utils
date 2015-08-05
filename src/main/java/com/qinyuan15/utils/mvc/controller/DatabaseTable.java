@@ -7,6 +7,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.util.StringUtils;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,8 +133,8 @@ public class DatabaseTable extends AbstractTable {
         for (Row row : rows) {
             for (int i = 0; i < row.getCols().length; i++) {
                 Object col = row.getCols()[i];
-                if (col instanceof String && DateUtils.isDateTimeFromMySQL((String) col)) {
-                    row.getCols()[i] = DateUtils.trimMilliSecond((String) col);
+                if (col instanceof Timestamp && DateUtils.isDateTimeFromMySQL(col.toString())) {
+                    row.getCols()[i] = DateUtils.trimMilliSecond(col.toString());
                 }
             }
         }
@@ -142,6 +143,7 @@ public class DatabaseTable extends AbstractTable {
     }
 
     // TODO 当存在columnPostHandlers时，getDistinctValues和getRows中的结果会出现一致性问题
+    @SuppressWarnings("unchecked")
     public List getDistinctValues(String field) {
         if (!StringUtils.hasText(field)) {
             return new ArrayList<>();
@@ -157,7 +159,17 @@ public class DatabaseTable extends AbstractTable {
         query += " FROM " + tableName;
 
         HibernateListBuilder listBuilder = getFilteredListBuilder();
-        return getList(listBuilder, query);
+        List list = getList(listBuilder, query);
+
+        // adjust datetime
+        for (int i = 0; i < list.size(); i++) {
+            Object value = list.get(i);
+            if (value instanceof Timestamp && DateUtils.isDateTimeFromMySQL(value.toString())) {
+                list.set(i, DateUtils.trimMilliSecond(value.toString()));
+            }
+        }
+
+        return list;
     }
 
     private List getList(HibernateListBuilder listBuilder, String query) {

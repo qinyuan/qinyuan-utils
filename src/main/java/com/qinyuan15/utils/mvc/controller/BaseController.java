@@ -52,6 +52,18 @@ public class BaseController {
         return request.getParameter(name);
     }
 
+    protected String[] getParameters(String name) {
+        if (!StringUtils.hasText(name)) {
+            return null;
+        }
+
+        String[] values = request.getParameterValues(name);
+        if (values == null && !name.endsWith("[]")) {
+            values = request.getParameterValues(name + "[]");
+        }
+        return values;
+    }
+
     protected Integer getIntParameter(String name) {
         String value = getParameter(name);
         return NumberUtils.isNumber(value) ? Integer.parseInt(value) : null;
