@@ -135,23 +135,16 @@ public class BaseController {
         addJavaScriptData(key, value);
     }
 
-    private static Map<String, Object> createResultMap(boolean success, Object detail) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("success", success);
-        map.put("detail", detail);
-        return map;
-    }
-
     protected String success() {
-        return toJson(createResultMap(true, null));
+        return toJson(JsonResultBuilder.build(true, null));
     }
 
     protected String success(String detail) {
-        return toJson(createResultMap(true, detail));
+        return toJson(JsonResultBuilder.build(true, detail));
     }
 
     protected String fail(String info) {
-        return toJson(createResultMap(false, info));
+        return toJson(JsonResultBuilder.build(false, info));
     }
 
     protected String failByDatabaseError() {

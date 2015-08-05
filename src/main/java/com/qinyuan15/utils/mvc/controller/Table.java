@@ -6,7 +6,7 @@ import java.util.List;
  * Class used to show table in web page
  * Created by qinyuan on 15-7-23.
  */
-public interface Table {
+public interface Table extends PaginationItemFactory<Table.Row> {
     List<String> getAliases();
 
     List<String> getHeads();

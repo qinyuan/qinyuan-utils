@@ -13,7 +13,7 @@ import java.util.List;
  * Implement Table by SQL or HQL
  * Created by qinyuan on 15-7-23.
  */
-public class DatabaseTable extends AbstractTable implements PaginationItemFactory<Table.Row> {
+public class DatabaseTable extends AbstractTable {
     public final static QueryType DEFAULT_QUERY_TYPE = QueryType.HQL;
 
     private final String tableName;
