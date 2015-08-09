@@ -11,6 +11,12 @@ public abstract class AbstractRankingDao<T> extends AbstractDao<T> {
 
     @SuppressWarnings("unchecked")
     @Override
+    public List<T> getInstances(int firstResult, int maxResults) {
+        return new RankingDao().getInstances(getPersistClass(), firstResult, maxResults);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
     public T getFirstInstance() {
         return (T) new RankingDao().getFirstInstance(getPersistClass());
     }

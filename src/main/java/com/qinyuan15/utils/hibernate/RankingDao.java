@@ -3,6 +3,8 @@ package com.qinyuan15.utils.hibernate;
 import com.google.common.collect.Lists;
 import com.qinyuan15.utils.IntegerUtils;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -12,16 +14,26 @@ import java.util.List;
  * Created by qinyuan on 15-3-21.
  */
 public class RankingDao {
+    private final static Logger LOGGER = LoggerFactory.getLogger(RankingDao.class);
 
     public final static String ASC_ORDER = " ORDER BY ranking ASC";
     public final static String DESC_ORDER = " ORDER BY ranking DESC";
 
+
     public <T extends Ranking> T getFirstInstance(Class<T> clazz) {
-        return new HibernateListBuilder().addOrder("ranking", true).getFirstItem(clazz);
+        return getRankingListBuilder().getFirstItem(clazz);
     }
 
     public <T extends Ranking> List<T> getInstances(Class<T> clazz) {
-        return new HibernateListBuilder().addOrder("ranking", true).build(clazz);
+        return getRankingListBuilder().build(clazz);
+    }
+
+    public <T extends Ranking> List<T> getInstances(Class<T> clazz, int firstResult, int maxResult) {
+        return getRankingListBuilder().limit(firstResult, maxResult).build(clazz);
+    }
+
+    private HibernateListBuilder getRankingListBuilder() {
+        return new HibernateListBuilder().addOrder("ranking", true);
     }
 
     public Integer getMaxRanking(Class<? extends Ranking> clazz) {
@@ -94,7 +106,11 @@ public class RankingDao {
     public <T extends Ranking> void rankUp(Class<T> clazz, int id, List<String> limitFields) {
         T current = HibernateUtils.get(clazz, id);
         T previous = this.getPrevious(current, getWhereClauseByLimitFields(current, limitFields));
-        this.switchRanking(current, previous);
+        if (previous == null) {
+            LOGGER.warn("There is no previous instance of {}", getLogIdentity(current));
+        } else {
+            this.switchRanking(current, previous);
+        }
     }
 
     public <T extends Ranking> void rankDown(Class<T> clazz, int id) {
@@ -108,7 +124,22 @@ public class RankingDao {
     public <T extends Ranking> void rankDown(Class<T> clazz, int id, List<String> limitFields) {
         T current = HibernateUtils.get(clazz, id);
         T next = this.getNext(current, getWhereClauseByLimitFields(current, limitFields));
-        this.switchRanking(current, next);
+        if (next == null) {
+            LOGGER.warn("There is no next instance of {}", getLogIdentity(current));
+        } else {
+            this.switchRanking(current, next);
+        }
+    }
+
+    private String getLogIdentity(Object object) {
+        if (object == null) {
+            return null;
+        }
+        if (object instanceof Persist) {
+            return object.getClass().getSimpleName() + ":" + ((Persist) object).getId();
+        } else {
+            return object.toString();
+        }
     }
 
     private String getWhereClauseByLimitFields(java.lang.Object bean, List<String> limitFields) {

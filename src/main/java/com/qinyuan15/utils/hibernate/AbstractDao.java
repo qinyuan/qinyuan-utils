@@ -15,6 +15,11 @@ public class AbstractDao<T> {
     }
 
     @SuppressWarnings("unchecked")
+    public List<T> getInstances(int firstResult, int maxResults) {
+        return new HibernateListBuilder().limit(firstResult, maxResults).build(getPersistClass());
+    }
+
+    @SuppressWarnings("unchecked")
     public T getFirstInstance() {
         return (T) new HibernateListBuilder().getFirstItem(getPersistClass());
     }
