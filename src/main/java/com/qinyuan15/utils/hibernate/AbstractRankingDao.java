@@ -9,6 +9,8 @@ public abstract class AbstractRankingDao<T> extends AbstractDao<T> {
         return new RankingDao().getInstances(getPersistClass());
     }
 
+
+
     public void rankUp(int id) {
         new RankingDao().rankUp(getPersistClass(), id);
     }

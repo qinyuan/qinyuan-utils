@@ -15,6 +15,12 @@ public class AbstractDao<T> {
     }
 
     @SuppressWarnings("unchecked")
+    public T getFirstInstance() {
+        return (T)new HibernateListBuilder().getFirstItem(getPersistClass());
+        //return new RankingDao().getFirstInstance(HelpGroup.class);
+    }
+
+    @SuppressWarnings("unchecked")
     public T getInstance(Integer id) {
         return (T) HibernateUtils.get(getPersistClass(), id);
     }
