@@ -9,7 +9,11 @@ public abstract class AbstractRankingDao<T> extends AbstractDao<T> {
         return new RankingDao().getInstances(getPersistClass());
     }
 
-
+    @SuppressWarnings("unchecked")
+    @Override
+    public T getFirstInstance() {
+        return (T) new RankingDao().getFirstInstance(getPersistClass());
+    }
 
     public void rankUp(int id) {
         new RankingDao().rankUp(getPersistClass(), id);
