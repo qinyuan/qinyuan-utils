@@ -1,5 +1,6 @@
 package com.qinyuan15.utils.hibernate;
 
+import com.qinyuan15.utils.security.User;
 import org.junit.Test;
 
 /**
@@ -12,5 +13,13 @@ public class HibernateUtilsTest {
     public void testGetCount() {
         //long count = HibernateUtils.getCount("Commodity");
         //assertThat(HibernateUtils.getCount("Commodity", "id>0")).isEqualTo(count);
+    }
+
+    @Test
+    public void testSave() {
+        User user = new User();
+        user.setUsername("张三");
+        user.setPassword("test");
+        HibernateUtils.save(user);
     }
 }

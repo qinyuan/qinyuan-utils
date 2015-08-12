@@ -5,7 +5,7 @@ package com.qinyuan15.utils.hibernate;
  * Created by qinyuan on 15-7-2.
  */
 public interface Persist {
-    int getId();
+    Integer getId();
 
     void setId(Integer id);
 }

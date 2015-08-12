@@ -5,13 +5,15 @@ package com.qinyuan15.utils.hibernate;
  * Created by qinyuan on 14-12-27.
  */
 public abstract class PersistObject implements Persist {
-    private int id;
+    private Integer id;
 
-    public int getId() {
+    @Override
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    @Override
+    public void setId(Integer id) {
         this.id = id;
     }
 }
