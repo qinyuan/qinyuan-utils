@@ -1,6 +1,6 @@
 package com.qinyuan15.utils.mail;
 
-import com.qinyuan15.utils.hibernate.PersistObject;import java.lang.Integer;import java.lang.String;
+import com.qinyuan15.utils.database.hibernate.PersistObject;import java.lang.Integer;import java.lang.String;
 
 /**
  * Class to record information about mail request with serial key.

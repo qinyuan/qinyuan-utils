@@ -2,8 +2,8 @@ package com.qinyuan15.utils.security;
 
 import com.qinyuan15.utils.DateUtils;
 import com.qinyuan15.utils.IntegerUtils;
-import com.qinyuan15.utils.hibernate.HibernateListBuilder;
-import com.qinyuan15.utils.hibernate.HibernateUtils;
+import com.qinyuan15.utils.database.hibernate.HibernateListBuilder;
+import com.qinyuan15.utils.database.hibernate.HibernateUtils;
 import com.qinyuan15.utils.ip.DefaultIpLocationQuerier;
 
 import java.util.List;

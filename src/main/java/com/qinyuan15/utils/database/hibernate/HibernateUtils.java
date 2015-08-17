@@ -1,4 +1,4 @@
-package com.qinyuan15.utils.hibernate;
+package com.qinyuan15.utils.database.hibernate;
 
 import com.qinyuan15.utils.IntegerUtils;
 import org.hibernate.Query;
@@ -126,7 +126,7 @@ public class HibernateUtils {
      *
      * @param clazz       class of persist object
      * @param whereClause delete condition
-     * @deprecated use {@link com.qinyuan15.utils.hibernate.HibernateDeleter#delete(Class)}
+     * @deprecated use {@link com.qinyuan15.utils.database.hibernate.HibernateDeleter#delete(Class)}
      */
     public static void delete(Class<?> clazz, String whereClause) {
         String hql = "DELETE FROM " + clazz.getSimpleName() + " " +
@@ -138,7 +138,7 @@ public class HibernateUtils {
      * delete all data of certain table
      *
      * @param clazz class of persist object
-     * @deprecated use {@link com.qinyuan15.utils.hibernate.HibernateDeleter#deleteAll(Class)}
+     * @deprecated use {@link com.qinyuan15.utils.database.hibernate.HibernateDeleter#deleteAll(Class)}
      */
     public static void deleteAll(Class<?> clazz) {
         delete(clazz, "");
@@ -149,7 +149,7 @@ public class HibernateUtils {
      *
      * @param clazz class of persist object
      * @param id    the id of persist object to delete
-     * @deprecated use {@link com.qinyuan15.utils.hibernate.HibernateDeleter#deleteById(Class, Integer)}
+     * @deprecated use {@link com.qinyuan15.utils.database.hibernate.HibernateDeleter#deleteById(Class, Integer)}
      */
     public static void delete(Class<?> clazz, Integer id) {
         Session session = HibernateUtils.getSession();
@@ -195,7 +195,7 @@ public class HibernateUtils {
      * @param clazz class of persist objects to get
      * @param <T>   type of persist object
      * @return list containing all instances of target persists object
-     * @deprecated use {@link com.qinyuan15.utils.hibernate.HibernateListBuilder#build(Class)}
+     * @deprecated use {@link com.qinyuan15.utils.database.hibernate.HibernateListBuilder#build(Class)}
      */
     @SuppressWarnings("unchecked")
     public static <T> List<T> getList(Class<T> clazz) {
@@ -203,7 +203,7 @@ public class HibernateUtils {
     }
 
     /**
-     * @deprecated use {@link com.qinyuan15.utils.hibernate.HibernateListBuilder#build(Class)}
+     * @deprecated use {@link com.qinyuan15.utils.database.hibernate.HibernateListBuilder#build(Class)}
      */
     @SuppressWarnings("unchecked")
     public static <T> List<T> getList(Class<T> clazz, String whereClause) {
@@ -212,7 +212,7 @@ public class HibernateUtils {
 
 
     /**
-     * @deprecated use {@link com.qinyuan15.utils.hibernate.HibernateListBuilder#build(Class)}
+     * @deprecated use {@link com.qinyuan15.utils.database.hibernate.HibernateListBuilder#build(Class)}
      */
     @SuppressWarnings("unchecked")
     public static <T> List<T> getList(Class<T> clazz, String whereClause, int firstResult, int maxResults) {
@@ -220,14 +220,14 @@ public class HibernateUtils {
     }
 
     /**
-     * @deprecated use {@link com.qinyuan15.utils.hibernate.HibernateListBuilder#build(Class)}
+     * @deprecated use {@link com.qinyuan15.utils.database.hibernate.HibernateListBuilder#build(Class)}
      */
     public static List getList(String hql) {
         return getList(hql, -1, -1);
     }
 
     /**
-     * @deprecated use {@link com.qinyuan15.utils.hibernate.HibernateListBuilder#getFirstItem(Class)}
+     * @deprecated use {@link com.qinyuan15.utils.database.hibernate.HibernateListBuilder#getFirstItem(Class)}
      */
     @SuppressWarnings("unchecked")
     public static <T> T getFirstItem(Class<T> clazz, String whereClause) {
@@ -235,14 +235,14 @@ public class HibernateUtils {
     }
 
     /**
-     * @deprecated use {@link com.qinyuan15.utils.hibernate.HibernateListBuilder#getFirstItem(Class)}
+     * @deprecated use {@link com.qinyuan15.utils.database.hibernate.HibernateListBuilder#getFirstItem(Class)}
      */
     public static <T> T getFirstItem(Class<T> clazz) {
         return getFirstItem(clazz, null);
     }
 
     /**
-     * @deprecated use {@link com.qinyuan15.utils.hibernate.HibernateListBuilder#getFirstItem(Class)}
+     * @deprecated use {@link com.qinyuan15.utils.database.hibernate.HibernateListBuilder#getFirstItem(Class)}
      */
     public static Object getFirstItem(String hql) {
         List list = getList(hql, 0, 1);
@@ -250,7 +250,7 @@ public class HibernateUtils {
     }
 
     /**
-     * @deprecated use {@link com.qinyuan15.utils.hibernate.HibernateListBuilder#build(Class)}
+     * @deprecated use {@link com.qinyuan15.utils.database.hibernate.HibernateListBuilder#build(Class)}
      */
     public static List getList(String hql, int firstResult, int maxResults) {
         Session session = getSession();
@@ -275,28 +275,28 @@ public class HibernateUtils {
     }
 
     /**
-     * @deprecated use {@link com.qinyuan15.utils.hibernate.HibernateListBuilder#count(Class)}
+     * @deprecated use {@link com.qinyuan15.utils.database.hibernate.HibernateListBuilder#count(Class)}
      */
     public static long getCount(Class<?> clazz) {
         return getCount(clazz, "");
     }
 
     /**
-     * @deprecated use {@link com.qinyuan15.utils.hibernate.HibernateListBuilder#count(Class)}
+     * @deprecated use {@link com.qinyuan15.utils.database.hibernate.HibernateListBuilder#count(Class)}
      */
     public static long getCount(String className) {
         return getCount(className, "");
     }
 
     /**
-     * @deprecated use {@link com.qinyuan15.utils.hibernate.HibernateListBuilder#count(Class)}
+     * @deprecated use {@link com.qinyuan15.utils.database.hibernate.HibernateListBuilder#count(Class)}
      */
     public static long getCount(Class<?> clazz, String whereCondition) {
         return getCount(clazz.getSimpleName(), whereCondition);
     }
 
     /**
-     * @deprecated use {@link com.qinyuan15.utils.hibernate.HibernateListBuilder#count(Class)}
+     * @deprecated use {@link com.qinyuan15.utils.database.hibernate.HibernateListBuilder#count(Class)}
      */
     public static long getCount(String className, String whereCondition) {
         List list = getList("SELECT COUNT(*) FROM " + className + " " +

@@ -1,6 +1,6 @@
 package com.qinyuan15.utils.mvc.controller;
 
-import com.qinyuan15.utils.hibernate.PersistObject;
+import com.qinyuan15.utils.database.hibernate.PersistObject;
 import org.junit.Test;
 
 import java.util.ArrayList;

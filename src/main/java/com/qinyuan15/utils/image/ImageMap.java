@@ -1,6 +1,6 @@
 package com.qinyuan15.utils.image;
 
-import com.qinyuan15.utils.hibernate.PersistObject;
+import com.qinyuan15.utils.database.hibernate.PersistObject;
 
 /**
  * Persist Class of table image_map

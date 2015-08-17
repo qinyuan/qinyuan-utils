@@ -1,6 +1,6 @@
 package com.qinyuan15.utils.mail;
 
-import com.qinyuan15.utils.hibernate.PersistObject;import java.lang.String;
+import com.qinyuan15.utils.database.hibernate.PersistObject;import java.lang.String;
 
 public class MailAccount extends PersistObject {
     private String host;

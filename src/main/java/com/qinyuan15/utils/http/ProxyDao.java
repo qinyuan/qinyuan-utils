@@ -1,7 +1,7 @@
 package com.qinyuan15.utils.http;
 
-import com.qinyuan15.utils.hibernate.HibernateListBuilder;
-import com.qinyuan15.utils.hibernate.HibernateUtils;
+import com.qinyuan15.utils.database.hibernate.HibernateListBuilder;
+import com.qinyuan15.utils.database.hibernate.HibernateUtils;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.slf4j.Logger;

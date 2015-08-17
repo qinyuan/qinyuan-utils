@@ -1,4 +1,4 @@
-package com.qinyuan15.utils.hibernate;
+package com.qinyuan15.utils.database.hibernate;
 
 import com.google.common.collect.Lists;
 import com.qinyuan15.utils.IntegerUtils;

@@ -1,4 +1,4 @@
-package com.qinyuan15.utils.hibernate;
+package com.qinyuan15.utils.database.hibernate;
 
 import org.hibernate.Session;
 import org.slf4j.Logger;

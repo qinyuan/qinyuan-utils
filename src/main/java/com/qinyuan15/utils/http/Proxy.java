@@ -1,6 +1,6 @@
 package com.qinyuan15.utils.http;
 
-import com.qinyuan15.utils.hibernate.PersistObject;
+import com.qinyuan15.utils.database.hibernate.PersistObject;
 
 /**
  * Class to record Proxy Server information

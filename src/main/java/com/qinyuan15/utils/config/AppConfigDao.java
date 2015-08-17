@@ -1,7 +1,7 @@
 package com.qinyuan15.utils.config;
 
-import com.qinyuan15.utils.hibernate.HibernateListBuilder;
-import com.qinyuan15.utils.hibernate.HibernateUtils;
+import com.qinyuan15.utils.database.hibernate.HibernateListBuilder;
+import com.qinyuan15.utils.database.hibernate.HibernateUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /**

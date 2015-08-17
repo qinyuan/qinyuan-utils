@@ -1,4 +1,4 @@
-package com.qinyuan15.utils.hibernate;
+package com.qinyuan15.utils.database.hibernate;
 
 import java.util.Properties;
 import java.util.regex.Matcher;

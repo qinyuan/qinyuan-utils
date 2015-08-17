@@ -1,4 +1,4 @@
-package com.qinyuan15.utils.hibernate;
+package com.qinyuan15.utils.database.hibernate;
 
 import com.qinyuan15.utils.security.User;
 import org.junit.Test;

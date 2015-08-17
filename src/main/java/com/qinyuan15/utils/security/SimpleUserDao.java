@@ -1,6 +1,6 @@
 package com.qinyuan15.utils.security;
 
-import com.qinyuan15.utils.hibernate.HibernateListBuilder;
+import com.qinyuan15.utils.database.hibernate.HibernateListBuilder;
 import org.springframework.util.StringUtils;
 
 /**

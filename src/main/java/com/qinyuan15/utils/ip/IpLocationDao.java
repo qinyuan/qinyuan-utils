@@ -1,7 +1,7 @@
 package com.qinyuan15.utils.ip;
 
-import com.qinyuan15.utils.hibernate.HibernateListBuilder;
-import com.qinyuan15.utils.hibernate.HibernateUtils;
+import com.qinyuan15.utils.database.hibernate.HibernateListBuilder;
+import com.qinyuan15.utils.database.hibernate.HibernateUtils;
 
 import java.util.List;
 
