@@ -77,7 +77,7 @@ public class DatabaseTable extends AbstractTable {
     }
 
     @Override
-    public long getCount() {
+    public int getCount() {
         if (queryType.equals(QueryType.SQL)) {
             return getFilteredListBuilder().countBySQL(tableName);
         } else if (queryType.equals(QueryType.HQL)) {

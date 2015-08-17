@@ -32,7 +32,7 @@ public class ProxyRejectionDao {
 
     public static class Factory implements PaginationItemFactory<ProxyRejection> {
         @Override
-        public long getCount() {
+        public int getCount() {
             return new HibernateListBuilder().count(ProxyRejection.class);
         }
 
