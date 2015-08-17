@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class AbstractPaginationItemFactory<T> implements PaginationItemFactory<T> {
     @Override
-    public long getCount() {
+    public int getCount() {
         return getListBuilder().count(GenericUtils.getRealTypeOfGenericArgument(this.getClass()));
     }
 
