@@ -18,6 +18,15 @@ public abstract class AbstractPaginationItemFactory<T> implements PaginationItem
                 GenericUtils.getRealTypeOfGenericArgument(this.getClass()));
     }
 
+    public List<T> getInstances() {
+        return getInstances(-1, -1);
+    }
+
+    public T getFirstInstance() {
+        List<T> activities = getInstances();
+        return activities.size() == 0 ? null : activities.get(0);
+    }
+
     protected HibernateListBuilder getListBuilder() {
         return new HibernateListBuilder();
     }
