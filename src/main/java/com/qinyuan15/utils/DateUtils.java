@@ -148,14 +148,20 @@ public class DateUtils {
         return (int) (timeStampDiff / 1000);
     }
 
+    public static int SECONDS_OF_ONE_DAY = 3600 * 24;
+
     public static Date threeDaysAgo() {
-        long secondsOfThreeDays = 3 * 3600 * 24;
+        long secondsOfThreeDays = 3 * SECONDS_OF_ONE_DAY;
         return new Date(System.currentTimeMillis() - secondsOfThreeDays * 1000);
     }
 
     public static Date threeMonthsAgo() {
-        long secondsOfThreeMonths = 90 * 3600 * 24;
+        long secondsOfThreeMonths = 90 * SECONDS_OF_ONE_DAY;
         return new Date(System.currentTimeMillis() - secondsOfThreeMonths * 1000);
+    }
+
+    public static Date oneDayLater() {
+        return new Date(System.currentTimeMillis() + SECONDS_OF_ONE_DAY * 1000);
     }
 
     /**
